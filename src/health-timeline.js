@@ -39,7 +39,7 @@ class HealthTimeline extends Component {
 
     const allDates = props.events.map((event) => event.date);
 
-    const minDate = moment(d3.min(allDates)).add(10, 'years'); // TODO: Or support custom start/end dates
+    const minDate = moment(d3.min(allDates)).subtract(10, 'years'); // TODO: Or support custom start/end dates
     const maxDate = moment(d3.max(allDates)).add(10, 'years');
     const numberOfYears = maxDate.diff(minDate, 'years');
     const height = numberOfYears * pixelsPerYear;
