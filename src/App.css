@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 .App {
   text-align: center;
 }
@@ -30,4 +34,26 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.health-timeline {
+  height: 100vh;
+  margin: 0 auto;
+  overflow-y: auto;
+}
+
+.health-timeline-axis text {
+  text-anchor: start;
+}
+
+.health-timeline-header {
+  display: flex;
+  width: 100%;
+}
+
+/* TODO: Need to squish titles for small screens */
+.health-timeline-header__column {
+  text-align: center;
+  flex: 1;
+  padding: 5px 10px;
 }
