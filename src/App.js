@@ -1,61 +1,24 @@
 import React, { Component } from 'react';
-import HealthTimeline from './health-timeline';
+import HealthTimeline from './components/health-timeline';
+import { load } from './spreadsheet';
+import config from './config';
 
 import './app.css';
-
-const events = [
-  {
-    title: 'Something 1',
-    category: 'Category 1',
-    date: '1901'
-  },
-  {
-    title: 'Something 2',
-    category: 'Category 2',
-    date: '1918'
-  },
-  {
-    title: 'Something 3',
-    category: 'Category 1',
-    date: '1967'
-  },
-  {
-    title: 'Something 4',
-    category: 'Category 3',
-    date: '1967'
-  },
-  {
-    title: 'Something 5',
-    category: 'Category 4',
-    date: '1979'
-  },
-  {
-    title: 'Something 6',
-    category: 'Category 2',
-    date: '1983'
-  },
-  {
-    title: 'Something 7',
-    category: 'Category 1',
-    date: '1910'
-  },
-  {
-    title: 'Something 8',
-    category: 'Category 5',
-    date: '2002'
-  }
-]
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      width: window.innerWidth
+      events: [],
+      width: window.innerWidth,
+      error: null
     }
   }
 
   componentDidMount() {
+    window.gapi.load("client", this.initClient);
+
     this.updateWidth();
     window.addEventListener('resize', this.updateWidth);
   }
@@ -64,16 +27,46 @@ class App extends Component {
     window.removeEventListener('resize', this.updateWidth);
   }
 
+  initClient = () => {
+    window.gapi.client
+      .init({
+        apiKey: config.apiKey,
+        discoveryDocs: config.discoveryDocs
+      })
+      .then(() => {
+        load(this.onLoad);
+      })
+  }
+
+  onLoad = (data, error) => {
+    if (data) {
+      this.setState({ events: data.events });
+    } else {
+      this.setState({ error })
+    }
+  }
+
   updateWidth = () => {
     this.setState({ width: window.innerWidth });
   }
 
   render() {
-    return (
-      <div className="App">
-        <HealthTimeline events={events} width={this.state.width} />
-      </div>
-    );
+    if (this.state.error) {
+      return <div>{this.state.error.message}</div>;
+    }
+
+    if (this.state.events.length) {
+      return (
+        <div className="App">
+          {
+            // TODO: minDate and maxDate are placeholders
+          }
+          <HealthTimeline events={this.state.events} width={this.state.width} minDate="1880" maxDate="2020" />
+        </div>
+      );
+    }
+
+    return <div>Loading...</div>;
   }
 }
 
