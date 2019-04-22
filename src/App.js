@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import HealthTimeline from './components/health-timeline';
+import Carousel from './components/carousel';
 import { load } from './spreadsheet';
 import config from './config';
 
@@ -12,7 +13,8 @@ class App extends Component {
     this.state = {
       events: [],
       width: window.innerWidth,
-      error: null
+      error: null,
+      activeIndex: 0,
     }
   }
 
@@ -58,6 +60,13 @@ class App extends Component {
     if (this.state.events.length) {
       return (
         <div className="App">
+          <Carousel>
+            {this.state.events.map(event => {
+              return (
+                <div>{event.title}</div>
+              )
+            })}
+          </Carousel>
           {
             // TODO: minDate and maxDate are placeholders
           }
