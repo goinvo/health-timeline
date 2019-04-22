@@ -35,7 +35,7 @@ class HealthTimeline extends Component {
 
     this.init(props, false);
 
-    const pixelsPerYear = 10;
+    const pixelsPerYear = 20;
     const zoomFactor = 1;
     const allDates = props.events.map((event) => event.date);
     const minDate = moment(props.minDate) || moment(d3.min(allDates)).subtract(10, 'years'); // TODO: min/max from data doesn't seem to be working
@@ -63,7 +63,7 @@ class HealthTimeline extends Component {
   init = (props, shouldSetState = true) => {
     const categories = [...new Set(props.events.map((event) => event.category))];
     const allDates = props.events.map((event) => event.date);
-    const pixelsPerYear = 10;
+    const pixelsPerYear = 20;
     const minDate = moment(props.minDate) || moment(d3.min(allDates)).subtract(10, 'years'); // TODO: Or support custom start/end dates
     const maxDate = moment(props.maxDate) || moment(d3.max(allDates)).add(10, 'years');
     const yDomain = props.inverted ? [maxDate, minDate] : [minDate, maxDate];
@@ -132,6 +132,7 @@ class HealthTimeline extends Component {
                 <EventMarker
                   data={event}
                   fill={this.scaleColor(event.category).header}
+                  bandwidth={this.scaleX.bandwidth()}
                   translate={`${this.scaleX(event.category) + (this.scaleX.bandwidth() / 2)}, ${this.scaleY(moment(event.date))}`}
                 />
               )
