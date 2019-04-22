@@ -33,12 +33,11 @@ class HealthTimeline extends Component {
     super(props);
     // TODO: Make all these configurable with props (pixelsPerYear, zoomFactor (initial?), outer year range padding, etc)
 
-    const width = this.props.width;
+    this.init(props, false);
+
     const pixelsPerYear = 10;
     const zoomFactor = 1;
-
     const allDates = props.events.map((event) => event.date);
-
     const minDate = moment(props.minDate) || moment(d3.min(allDates)).subtract(10, 'years'); // TODO: min/max from data doesn't seem to be working
     const maxDate = moment(props.maxDate) || moment(d3.max(allDates)).add(10, 'years');
     const totalYears = maxDate.diff(minDate, 'years');
@@ -47,64 +46,51 @@ class HealthTimeline extends Component {
     const categories = [...new Set(props.events.map((event) => event.category))];
 
     this.state = {
-      width,
+      width: props.width,
       height,
       categories,
       events: props.events,
       totalYears
     };
-
-    // TODO: This code is duplicated in init function
-    this.scaleX = d3.scaleBand()
-      .domain(categories)
-      .rangeRound([0, width]);
-
-    this.scaleY = d3.scaleTime()
-      .domain([minDate, maxDate])
-      .range([0, height]); // TODO: zoom factor?
-
-    this.scaleColor = d3.scaleOrdinal()
-      .domain(categories)
-      .range(colors)
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps !== this.props) {
-      this.init();
+  componentWillReceiveProps(nextProps) {
+    if (nextProps !== this.props) {
+      this.init(nextProps);
     }
   }
 
-  init = () => {
-    const categories = [...new Set(this.props.events.map((event) => event.category))];
-
-    const allDates = this.props.events.map((event) => event.date);
-
+  init = (props, shouldSetState = true) => {
+    const categories = [...new Set(props.events.map((event) => event.category))];
+    const allDates = props.events.map((event) => event.date);
     const pixelsPerYear = 10;
-
-    const minDate = moment(this.props.minDate) || moment(d3.min(allDates)).subtract(10, 'years'); // TODO: Or support custom start/end dates
-    const maxDate = moment(this.props.maxDate) || moment(d3.max(allDates)).add(10, 'years');
+    const minDate = moment(props.minDate) || moment(d3.min(allDates)).subtract(10, 'years'); // TODO: Or support custom start/end dates
+    const maxDate = moment(props.maxDate) || moment(d3.max(allDates)).add(10, 'years');
+    const yDomain = props.inverted ? [maxDate, minDate] : [minDate, maxDate];
     const totalYears = maxDate.diff(minDate, 'years');
     const height = totalYears * pixelsPerYear;
 
-    this.setState({
-      events: this.props.events,
-      categories: categories,
-      width: this.props.width,
-      height: height,
-      totalYears
-    })
-
     this.scaleX = d3.scaleBand()
       .domain(categories)
-      .rangeRound([0, this.props.width]);
+      .rangeRound([0, props.width]);
 
     this.scaleY = d3.scaleTime()
-      .domain([minDate, maxDate])
+      .domain(yDomain)
       .range([0, height]); // TODO: zoom factor?
 
     this.scaleColor = d3.scaleOrdinal()
       .domain(categories)
       .range(colors)
+
+    if (shouldSetState) {
+      this.setState({
+        width: props.width,
+        height,
+        events: props.events,
+        categories,
+        totalYears
+      })
+    }
   }
 
   render() {

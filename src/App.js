@@ -61,7 +61,11 @@ class App extends Component {
           {
             // TODO: minDate and maxDate are placeholders
           }
-          <HealthTimeline events={this.state.events} width={this.state.width} minDate="1880" maxDate="2020" />
+          <HealthTimeline
+            events={this.state.events}
+            width={this.state.width}
+            minDate="1880"
+            maxDate="2020" />
         </div>
       );
     }
