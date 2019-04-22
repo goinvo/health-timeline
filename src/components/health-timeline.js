@@ -94,9 +94,10 @@ class HealthTimeline extends Component {
   }
 
   render() {
+    // TODO: Timeline header needs to tell timeline body of its height
     return (
       <div className="health-timeline">
-        <div className="health-timeline-header">
+        <div className="health-timeline-header" style={{ top: this.props.offsetTop || 0 }}>
           {
             this.state.categories.map((cat, i) => {
               return (

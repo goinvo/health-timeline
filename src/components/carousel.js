@@ -18,6 +18,21 @@ class Carousel extends Component {
     })
   }
 
+  componentDidMount() {
+    this.heightChanged();
+    window.addEventListener('resize', this.heightChanged);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.heightChanged);
+  }
+
+  heightChanged = () => {
+    // TODO: debounce?
+    const height = document.getElementById('health-timeline-carousel') ? document.getElementById('health-timeline-carousel').clientHeight : 0;
+    this.props.onHeightChange(height);
+  }
+
   render() {
     const carouselSettings = {
       dots: this.props.dots,
@@ -30,7 +45,7 @@ class Carousel extends Component {
     }
 
     return (
-      <div className="health-timeline-carousel">
+      <div className="health-timeline-carousel" id="health-timeline-carousel">
         <SlickCarousel {...carouselSettings} ref={this.carousel}>
           {this.props.children}
         </SlickCarousel>
@@ -40,12 +55,12 @@ class Carousel extends Component {
 }
 
 Carousel.defaultProps = {
-  dots: true,
+  dots: false,
   infinite: true,
   speed: 500,
   slidesToShow: 1,
   slidesToScroll: 1,
-  adaptiveHeight: true,
+  adaptiveHeight: false,
 }
 
 export default Carousel

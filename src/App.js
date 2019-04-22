@@ -4,7 +4,7 @@ import Carousel from './components/carousel';
 import { load } from './spreadsheet';
 import config from './config';
 
-import './app.css';
+import './app.scss';
 
 class App extends Component {
   constructor(props) {
@@ -15,6 +15,7 @@ class App extends Component {
       width: window.innerWidth,
       error: null,
       activeIndex: 0,
+      paddingTop: 0,
     }
   }
 
@@ -49,7 +50,12 @@ class App extends Component {
   }
 
   updateWidth = () => {
+    // TODO: debounce?
     this.setState({ width: window.innerWidth });
+  }
+
+  updatePaddingOffset = (carouselHeight = null) => {
+    this.setState({ paddingTop: carouselHeight });
   }
 
   render() {
@@ -60,21 +66,30 @@ class App extends Component {
     if (this.state.events.length) {
       return (
         <div className="App">
-          <Carousel>
-            {this.state.events.map(event => {
-              return (
-                <div>{event.title}</div>
-              )
-            })}
-          </Carousel>
-          {
-            // TODO: minDate and maxDate are placeholders
-          }
-          <HealthTimeline
-            events={this.state.events}
-            width={this.state.width}
-            minDate="1880"
-            maxDate="2020" />
+          <div className="timeline-wrapper" style={{ paddingTop: this.state.paddingTop }}>
+            <Carousel onHeightChange={this.updatePaddingOffset}>
+              {this.state.events.map(event => {
+                return (
+                  <div>
+                    <br/>
+                    <div>{event.title}</div>
+                    <br/>
+                    <div>{event.body}</div>
+                    <br/>
+                  </div>
+                )
+              })}
+            </Carousel>
+            {
+              // TODO: minDate and maxDate are placeholders
+            }
+            <HealthTimeline
+              offsetTop={this.state.paddingTop}
+              events={this.state.events}
+              width={this.state.width}
+              minDate="1880"
+              maxDate="2020" />
+          </div>
         </div>
       );
     }
