@@ -14,7 +14,7 @@ class App extends Component {
       events: [],
       width: window.innerWidth,
       error: null,
-      activeIndex: 0,
+      focusedIndex: 0,
       paddingTop: 0,
     }
   }
@@ -58,6 +58,11 @@ class App extends Component {
     this.setState({ paddingTop: carouselHeight });
   }
 
+  updateFocusedIndex = (i) => {
+    this.setState({ focusedIndex: i });
+    // TODO: Scroll to event
+  }
+
   render() {
     if (this.state.error) {
       return <div>{this.state.error.message}</div>;
@@ -67,7 +72,10 @@ class App extends Component {
       return (
         <div className="App">
           <div className="timeline-wrapper" style={{ paddingTop: this.state.paddingTop }}>
-            <Carousel onHeightChange={this.updatePaddingOffset}>
+            <Carousel
+              activeIndex={this.state.focusedIndex}
+              onHeightChange={this.updatePaddingOffset}
+              onSlideChange={this.updateFocusedIndex}>
               {this.state.events.map(event => {
                 return (
                   <div>
@@ -84,11 +92,13 @@ class App extends Component {
               // TODO: minDate and maxDate are placeholders
             }
             <HealthTimeline
+              focusedIndex={this.state.focusedIndex}
               offsetTop={this.state.paddingTop}
               events={this.state.events}
               width={this.state.width}
               minDate="1880"
-              maxDate="2020" />
+              maxDate="2020"
+              onEventClick={this.updateFocusedIndex}/>
           </div>
         </div>
       );

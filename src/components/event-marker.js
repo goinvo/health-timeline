@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import { Text } from '@vx/text';
 
 class EventMarker extends Component {
+
+  handleClick = () => {
+
+  }
+
   render() {
     const milestoneHeight = 50;
     const milestoneWidth = this.props.bandwidth - 40;
@@ -21,7 +26,7 @@ class EventMarker extends Component {
               rx="25"
               ry="25"
               stroke={ this.props.fill }
-              strokeWidth={ 2 }
+              strokeWidth={ this.props.focused ? 5 : 2 }
               fill="#fff"/>
               <Text
                 x="0"
@@ -36,7 +41,7 @@ class EventMarker extends Component {
             <circle
               cx="0"
               cy="0"
-              r={ 5 }
+              r={ this.props.focused ? 10: 5 }
               fill={ this.props.fill }>
             </circle>
         }

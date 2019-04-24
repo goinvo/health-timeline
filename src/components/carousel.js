@@ -6,7 +6,7 @@ class Carousel extends Component {
     super(props)
 
     this.state = {
-      activeIndex: 0,
+      activeIndex: props.activeIndex || 0,
     }
 
     this.carousel = React.createRef()
@@ -15,7 +15,17 @@ class Carousel extends Component {
   goTo = i => {
     this.setState({ activeIndex: i }, () => {
       this.carousel.current.slickGoTo(i)
+
+      if (this.props.onSlideChange) {
+        this.props.onSlideChange(i);
+      }
     })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.activeIndex !== this.props.activeIndex) {
+      this.goTo(nextProps.activeIndex);
+    }
   }
 
   componentDidMount() {
@@ -41,7 +51,7 @@ class Carousel extends Component {
       slidesToShow: this.props.slidesToShow,
       slidesToScroll: this.props.slidesToScroll,
       adaptiveHeight: this.props.adaptiveHeight,
-      beforeChange: (current, next) => this.setState({ activeIndex: next }),
+      beforeChange: (current, next) => this.goTo(next),
     }
 
     return (

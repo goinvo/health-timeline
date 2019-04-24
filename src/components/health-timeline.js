@@ -32,6 +32,7 @@ class HealthTimeline extends Component {
   constructor(props) {
     super(props);
     // TODO: Make all these configurable with props (pixelsPerYear, zoomFactor (initial?), outer year range padding, etc)
+    // TODO: Should really make sure the events are sorted by date
 
     this.init(props, false);
 
@@ -93,6 +94,12 @@ class HealthTimeline extends Component {
     }
   }
 
+  handleEventClick = (i) => {
+    if (this.props.onEventClick) {
+      this.props.onEventClick(i);
+    }
+  }
+
   render() {
     // TODO: Timeline header needs to tell timeline body of its height
     return (
@@ -128,14 +135,17 @@ class HealthTimeline extends Component {
             }
           </g>
           <g className="health-timeline-events">
-            {this.state.events.map((event) => {
+            {this.state.events.map((event, i) => {
               return (
-                <EventMarker
-                  data={event}
-                  fill={this.scaleColor(event.category).header}
-                  bandwidth={this.scaleX.bandwidth()}
-                  translate={`${this.scaleX(event.category) + (this.scaleX.bandwidth() / 2)}, ${this.scaleY(moment(event.date))}`}
-                />
+                <g onClick={() => this.handleEventClick(i)}>
+                  <EventMarker
+                    focused={this.props.focusedIndex === i}
+                    data={event}
+                    fill={this.scaleColor(event.category).header}
+                    bandwidth={this.scaleX.bandwidth()}
+                    translate={`${this.scaleX(event.category) + (this.scaleX.bandwidth() / 2)}, ${this.scaleY(moment(event.date))}`}
+                  />
+                </g>
               )
             })}
           </g>
