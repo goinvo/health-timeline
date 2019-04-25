@@ -40,8 +40,6 @@ class HealthTimeline extends Component {
 
     this.init(props, false);
 
-    this.scrollContainer = React.createRef();
-
     const pixelsPerYear = 20;
     const zoomFactor = 1;
     const allDates = props.events.map((event) => event.date);
@@ -145,19 +143,8 @@ class HealthTimeline extends Component {
   render() {
     // TODO: Timeline header needs to tell timeline body of its height
     return (
-      <div className="health-timeline" ref={this.scrollContainer} onScroll={this.handleScroll} id="scrollContainer">
-        {/* <div className="health-timeline-header" style={{ top: this.props.offsetTop || 0 }}>
-          {
-            this.state.categories.map((cat, i) => {
-              return (
-                <div className="health-timeline-header__column" style={{ backgroundColor: this.scaleColor(cat).header }}>
-                  { cat }
-                </div>
-              )
-            })
-          }
-        </div> */}
-        <div className="health-timeline-svg-container">
+      <div className="health-timeline">
+        <div className="health-timeline-svg-container" onScroll={this.handleScroll} id="scrollContainer">
           <svg className="health-timeline-svg" width={this.state.width} height={this.state.height}>
             <g className="health-timeline-columns">
               {
@@ -193,6 +180,31 @@ class HealthTimeline extends Component {
               })}
             </g>
             <Axis scale={this.scaleY} ticks={this.state.totalYears} translate={`translate(0, 0)`}/>
+          </svg>
+        </div>
+        <div className="health-timeline-header-container">
+          <svg className="health-timeline-header">
+            {
+              this.state.categories.map((cat, i) => {
+                return (
+                  <g transform={ `translate(${this.scaleX(cat)}, 0)` }>
+                    <rect
+                      className="health-timeline-header__column"
+                      x="0"
+                      y="0"
+                      width={ this.scaleX.bandwidth() }
+                      height={ 40 }
+                      fill={ this.scaleColor(cat).header }
+                    />
+                    <text
+                      x="0"
+                      y="25">
+                      { cat }
+                    </text>
+                  </g>
+                )
+              })
+            }
           </svg>
         </div>
       </div>

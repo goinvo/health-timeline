@@ -115,7 +115,7 @@ class App extends Component {
               events={this.state.events}
               width={this.state.width}
               minDate="1880"
-              maxDate="2020"
+              maxDate="2080"
               onEventClick={this.updateFocusedIndex}
               onFocusedEventChange={this.scrollToEvent} />
           </div>
