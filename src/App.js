@@ -66,8 +66,19 @@ class App extends Component {
     this.setState({ focusedIndex: i });
   }
 
-  scrollToEvent = (pos) => {
-    scroll.scrollTo(pos);
+  scrollToEvent = (pos, newIndex = null) => {
+    const indexChanged = !(newIndex === null);
+
+    const args = {
+      containerId: 'scrollContainer', // TODO: Should use ref from component here instead?
+      duration: indexChanged ? 300 : 750
+    }
+
+    scroll.scrollTo(pos, args);
+
+    if (indexChanged) {
+      this.updateFocusedIndex(newIndex);
+    }
   }
 
   render() {
@@ -78,7 +89,7 @@ class App extends Component {
     if (this.state.events.length) {
       return (
         <div className="App">
-          <div className="timeline-wrapper" style={{ paddingTop: this.state.paddingTop }}>
+          <div className="timeline-wrapper">
             <Carousel
               activeIndex={this.state.focusedIndex}
               onHeightChange={this.updatePaddingOffset}

@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3'; // TODO: Only take what we need
 import * as moment from 'moment';
+import * as Scroll from 'react-scroll'; // TODO: Only take what we need
+import { debounce } from 'lodash';
 
 import Axis from './axis';
 import EventMarker from './event-marker';
+
+const Events = Scroll.Events;
 
 const colors = [
   {
@@ -35,6 +39,8 @@ class HealthTimeline extends Component {
     // TODO: Should really make sure the events are sorted by date
 
     this.init(props, false);
+
+    this.scrollContainer = React.createRef();
 
     const pixelsPerYear = 20;
     const zoomFactor = 1;
@@ -105,11 +111,42 @@ class HealthTimeline extends Component {
     }
   }
 
+  getClosestPointTo = debounce((e) => {
+    let closest = null;
+    let closestDistance = null;
+    let closestIndex = 0;
+
+    this.state.events.forEach((event, i) => {
+      let eventPos = this.scaleY(moment(event.date));
+      let scrollPos = e.target.scrollTop;
+      if (i === 0) {
+        closest = eventPos;
+        closestDistance = Math.abs(eventPos - scrollPos);
+      } else {
+        let thisDistance = Math.abs(eventPos - scrollPos);
+        if (thisDistance <= closestDistance) {
+          closest = eventPos;
+          closestDistance = thisDistance;
+          closestIndex = i;
+        }
+      }
+    })
+
+    if (this.props.onFocusedEventChange) {
+      this.props.onFocusedEventChange(closest, closestIndex);
+    }
+  }, 300);
+
+  handleScroll = (e) => {
+    e.persist();
+    this.getClosestPointTo(e);
+  }
+
   render() {
     // TODO: Timeline header needs to tell timeline body of its height
     return (
-      <div className="health-timeline">
-        <div className="health-timeline-header" style={{ top: this.props.offsetTop || 0 }}>
+      <div className="health-timeline" ref={this.scrollContainer} onScroll={this.handleScroll} id="scrollContainer">
+        {/* <div className="health-timeline-header" style={{ top: this.props.offsetTop || 0 }}>
           {
             this.state.categories.map((cat, i) => {
               return (
@@ -119,43 +156,45 @@ class HealthTimeline extends Component {
               )
             })
           }
-        </div>
-        <svg className="health-timeline-svg" width={this.state.width} height={this.state.height}>
-          <g className="health-timeline-columns">
-            {
-              this.state.categories.map((cat) => {
+        </div> */}
+        <div className="health-timeline-svg-container">
+          <svg className="health-timeline-svg" width={this.state.width} height={this.state.height}>
+            <g className="health-timeline-columns">
+              {
+                this.state.categories.map((cat) => {
+                  return (
+                    <g className="health-timeline-column"
+                       transform={ `translate(${this.scaleX(cat)}, 0)` }>
+                      <rect
+                        x={ 0 }
+                        y={ 0 }
+                        width={ this.scaleX.bandwidth() }
+                        height={ this.state.height }
+                        fill={ this.scaleColor(cat).background }>
+                      </rect>
+                    </g>
+                  )
+                })
+              }
+            </g>
+            <g className="health-timeline-events">
+              {this.state.events.map((event, i) => {
                 return (
-                  <g className="health-timeline-column"
-                     transform={ `translate(${this.scaleX(cat)}, 0)` }>
-                    <rect
-                      x={ 0 }
-                      y={ 0 }
-                      width={ this.scaleX.bandwidth() }
-                      height={ this.state.height }
-                      fill={ this.scaleColor(cat).background }>
-                    </rect>
+                  <g onClick={() => this.handleEventClick(i)}>
+                    <EventMarker
+                      focused={this.props.focusedIndex === i}
+                      data={event}
+                      fill={this.scaleColor(event.category).header}
+                      bandwidth={this.scaleX.bandwidth()}
+                      translate={`${this.scaleX(event.category) + (this.scaleX.bandwidth() / 2)}, ${this.scaleY(moment(event.date))}`}
+                    />
                   </g>
                 )
-              })
-            }
-          </g>
-          <g className="health-timeline-events">
-            {this.state.events.map((event, i) => {
-              return (
-                <g onClick={() => this.handleEventClick(i)}>
-                  <EventMarker
-                    focused={this.props.focusedIndex === i}
-                    data={event}
-                    fill={this.scaleColor(event.category).header}
-                    bandwidth={this.scaleX.bandwidth()}
-                    translate={`${this.scaleX(event.category) + (this.scaleX.bandwidth() / 2)}, ${this.scaleY(moment(event.date))}`}
-                  />
-                </g>
-              )
-            })}
-          </g>
-          <Axis scale={this.scaleY} ticks={this.state.totalYears} translate={`translate(0, 0)`}/>
-        </svg>
+              })}
+            </g>
+            <Axis scale={this.scaleY} ticks={this.state.totalYears} translate={`translate(0, 0)`}/>
+          </svg>
+        </div>
       </div>
     )
   }
