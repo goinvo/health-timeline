@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+import * as Scroll from 'react-scroll'; // TODO: import only what's needed
+
 import HealthTimeline from './components/health-timeline';
 import Carousel from './components/carousel';
 import { load } from './spreadsheet';
 import config from './config';
 
 import './app.scss';
+
+const scroll = Scroll.animateScroll;
 
 class App extends Component {
   constructor(props) {
@@ -60,7 +64,10 @@ class App extends Component {
 
   updateFocusedIndex = (i) => {
     this.setState({ focusedIndex: i });
-    // TODO: Scroll to event
+  }
+
+  scrollToEvent = (pos) => {
+    scroll.scrollTo(pos);
   }
 
   render() {
@@ -98,7 +105,8 @@ class App extends Component {
               width={this.state.width}
               minDate="1880"
               maxDate="2020"
-              onEventClick={this.updateFocusedIndex}/>
+              onEventClick={this.updateFocusedIndex}
+              onFocusedEventChange={this.scrollToEvent} />
           </div>
         </div>
       );

@@ -58,6 +58,11 @@ class HealthTimeline extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps !== this.props) {
       this.init(nextProps);
+
+      if (this.props.onFocusedEventChange && (nextProps.focusedIndex !== this.props.focusedIndex)) {
+        const pos = this.scaleY(moment(this.state.events[nextProps.focusedIndex].date));
+        this.props.onFocusedEventChange(pos);
+      }
     }
   }
 
