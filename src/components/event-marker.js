@@ -15,7 +15,13 @@ class EventMarker extends Component {
       <g
         className="health-timeline-event"
         transform={ `translate(${ this.props.translate })` }>
-        {
+        <circle
+          cx="0"
+          cy="0"
+          r={ 10 }
+          fill={ this.props.fill }>
+        </circle>
+        {/* {
           this.props.data.milestone ?
           <g>
             <rect
@@ -44,7 +50,7 @@ class EventMarker extends Component {
               r={ this.props.focused ? 10: 5 }
               fill={ this.props.fill }>
             </circle>
-        }
+        } */}
       </g>
     )
   }

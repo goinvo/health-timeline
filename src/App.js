@@ -20,6 +20,7 @@ class App extends Component {
       error: null,
       focusedIndex: 0,
       paddingTop: 0,
+      activeCategory: null,
     }
   }
 
@@ -47,7 +48,7 @@ class App extends Component {
 
   onLoad = (data, error) => {
     if (data) {
-      this.setState({ events: data.events });
+      this.setState({ events: data.events, activeCategory: data.events[0].category });
     } else {
       this.setState({ error })
     }
@@ -63,7 +64,7 @@ class App extends Component {
   }
 
   updateFocusedIndex = (i) => {
-    this.setState({ focusedIndex: i });
+    this.setState({ focusedIndex: i, activeCategory: this.state.events[i].category });
   }
 
   scrollToEvent = (pos, newIndex = null) => {
@@ -74,7 +75,7 @@ class App extends Component {
       duration: indexChanged ? 300 : 750
     }
 
-    scroll.scrollTo(pos, args);
+    scroll.scrollTo(pos - 25, args); // TODO: 25 is hardcoded representation of header circle offset from top
 
     if (indexChanged) {
       this.updateFocusedIndex(newIndex);
@@ -111,6 +112,7 @@ class App extends Component {
             }
             <HealthTimeline
               focusedIndex={this.state.focusedIndex}
+              activeCategory={this.state.activeCategory}
               offsetTop={this.state.paddingTop}
               events={this.state.events}
               width={this.state.width}

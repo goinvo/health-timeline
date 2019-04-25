@@ -12,24 +12,44 @@ const Events = Scroll.Events;
 const colors = [
   {
     header: '#8FC5D8',
-    background: '#F5FFFF'
+    background: '#8FC5D877'
   },
   {
     header: '#9DA5CC',
-    background: '#EAF2FF'
+    background: '#9DA5CC77'
   },
   {
     header: '#DC8072',
-    background: '#FFE6D8'
+    background: '#DC807277'
   },
   {
     header: '#AC599B',
-    background: '#FFF2FF'
+    background: '#AC599B77'
   },
   {
     header: '#425AA3',
-    background: '#DBF3FF'
+    background: '#425AA377'
   }
+  // {
+  //   header: '#8FC5D8',
+  //   background: '#F5FFFF'
+  // },
+  // {
+  //   header: '#9DA5CC',
+  //   background: '#EAF2FF'
+  // },
+  // {
+  //   header: '#DC8072',
+  //   background: '#FFE6D8'
+  // },
+  // {
+  //   header: '#AC599B',
+  //   background: '#FFF2FF'
+  // },
+  // {
+  //   header: '#425AA3',
+  //   background: '#DBF3FF'
+  // }
 ];
 
 class HealthTimeline extends Component {
@@ -55,7 +75,7 @@ class HealthTimeline extends Component {
       height,
       categories,
       events: props.events,
-      totalYears
+      totalYears,
     };
   }
 
@@ -82,7 +102,8 @@ class HealthTimeline extends Component {
 
     this.scaleX = d3.scaleBand()
       .domain(categories)
-      .rangeRound([0, props.width]);
+      .rangeRound([0, props.width])
+      .padding([0.5]);
 
     this.scaleY = d3.scaleTime()
       .domain(yDomain)
@@ -116,7 +137,7 @@ class HealthTimeline extends Component {
 
     this.state.events.forEach((event, i) => {
       let eventPos = this.scaleY(moment(event.date));
-      let scrollPos = e.target.scrollTop;
+      let scrollPos = e.target.scrollTop + 25; // TODO: 25 is hardcoded representation of header circle offset from top
       if (i === 0) {
         closest = eventPos;
         closestDistance = Math.abs(eventPos - scrollPos);
@@ -146,6 +167,12 @@ class HealthTimeline extends Component {
       <div className="health-timeline">
         <div className="health-timeline-svg-container" onScroll={this.handleScroll} id="scrollContainer">
           <svg className="health-timeline-svg" width={this.state.width} height={this.state.height}>
+            <defs>
+              <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style={{ stopColor: this.scaleColor(this.props.activeCategory).background, stopOpacity: "0.5" }} />
+                <stop offset="100%" style={{ stopColor: "#FAF9F9", stopOpacity: "1" }} />
+              </linearGradient>
+            </defs>
             <g className="health-timeline-columns">
               {
                 this.state.categories.map((cat) => {
@@ -157,7 +184,7 @@ class HealthTimeline extends Component {
                         y={ 0 }
                         width={ this.scaleX.bandwidth() }
                         height={ this.state.height }
-                        fill={ this.scaleColor(cat).background }>
+                        fill={ this.props.activeCategory === cat ? "url(#grad1)" : "#FAF9F9"}>
                       </rect>
                     </g>
                   )
@@ -188,19 +215,20 @@ class HealthTimeline extends Component {
               this.state.categories.map((cat, i) => {
                 return (
                   <g transform={ `translate(${this.scaleX(cat)}, 0)` }>
-                    <rect
-                      className="health-timeline-header__column"
-                      x="0"
-                      y="0"
-                      width={ this.scaleX.bandwidth() }
-                      height={ 40 }
-                      fill={ this.scaleColor(cat).header }
-                    />
-                    <text
+                    {/* <text
                       x="0"
                       y="25">
                       { cat }
-                    </text>
+                    </text> */}
+                    <circle
+                      className="health-timeline-header__column"
+                      cx={ this.scaleX.bandwidth() / 2 }
+                      cy="25"
+                      r={ cat === this.props.activeCategory ? 20 : 16 }
+                      fill={ this.scaleColor(cat).background }
+                      stroke={ this.scaleColor(cat).header }
+                      strokeWidth={ this.props.activeCategory ? 7 : 5 }
+                    />
                   </g>
                 )
               })
