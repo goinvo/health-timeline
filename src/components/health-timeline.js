@@ -170,7 +170,7 @@ class HealthTimeline extends Component {
   truncate = (text, width) => {
     text.each(function () {
         const t = d3.select(this);
-        const title = t.attr('originalText').split('');
+        const title = t.attr('originaltext').split('');
 
         t.text('');
 
@@ -244,7 +244,7 @@ class HealthTimeline extends Component {
                       x={ this.scaleX.bandwidth() / 2 }
                       y="20"
                       textAnchor="middle"
-                      originalText={cat}>
+                      originaltext={cat}>
                       {cat}
                     </text>
                     <circle

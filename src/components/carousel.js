@@ -52,6 +52,8 @@ class Carousel extends Component {
       slidesToScroll: this.props.slidesToScroll,
       adaptiveHeight: this.props.adaptiveHeight,
       beforeChange: (current, next) => this.goTo(next),
+      vertical: true,
+      verticalSwiping: true,
     }
 
     return (

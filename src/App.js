@@ -98,11 +98,10 @@ class App extends Component {
               {this.state.events.map(event => {
                 return (
                   <div>
-                    <br/>
-                    <div>{event.title}</div>
-                    <br/>
-                    <div>{event.body}</div>
-                    <br/>
+                    <div className="card" style={{ backgroundColor: '#425AA3' }}>
+                      <p><b>{event.title}</b></p>
+                      <p>{event.body}</p>
+                    </div>
                   </div>
                 )
               })}
