@@ -20,7 +20,7 @@ class Axis extends Component {
       .tickSize(-10)
       .ticks(this.props.ticks);
 
-    const axisDOM = d3.select(this.axisElement).call(axis);
+    const axisDOM = d3.select(this.axisElement).call(axis).call(g => g.select('.domain').remove());
 
     // TODO: Letting D3 control selection/DOM here is not ideal.
     axisDOM.selectAll("text")
