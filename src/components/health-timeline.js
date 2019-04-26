@@ -60,6 +60,8 @@ class HealthTimeline extends Component {
 
     this.init(props, false);
 
+    this.header = React.createRef();
+
     const pixelsPerYear = 20;
     const zoomFactor = 1;
     const allDates = props.events.map((event) => event.date);
@@ -88,6 +90,10 @@ class HealthTimeline extends Component {
         this.props.onFocusedEventChange(pos);
       }
     }
+  }
+
+  componentDidUpdate() {
+    this.truncate(d3.select(this.header.current).selectAll('text'), this.scaleX.bandwidth())
   }
 
   init = (props, shouldSetState = true) => {
@@ -137,7 +143,7 @@ class HealthTimeline extends Component {
 
     this.state.events.forEach((event, i) => {
       let eventPos = this.scaleY(moment(event.date));
-      let scrollPos = e.target.scrollTop + 25; // TODO: 25 is hardcoded representation of header circle offset from top
+      let scrollPos = e.target.scrollTop + 50; // TODO: 50 is hardcoded representation of header circle offset from top
       if (i === 0) {
         closest = eventPos;
         closestDistance = Math.abs(eventPos - scrollPos);
@@ -154,11 +160,30 @@ class HealthTimeline extends Component {
     if (this.props.onFocusedEventChange) {
       this.props.onFocusedEventChange(closest, closestIndex);
     }
-  }, 300);
+  }, 100);
 
   handleScroll = (e) => {
     e.persist();
     this.getClosestPointTo(e);
+  }
+
+  truncate = (text, width) => {
+    text.each(function () {
+        const t = d3.select(this);
+        const title = t.attr('originalText').split('');
+
+        t.text('');
+
+        let i = 0;
+        while (i < title.length && t.node().getComputedTextLength() < width) {
+          t.text(t.text() + title[i]);
+          i++;
+        }
+
+        if (t.node().getComputedTextLength() >= width && t.text().length < title.length) {
+          t.text(t.text() + '...')
+        }
+    });
   }
 
   render() {
@@ -210,20 +235,22 @@ class HealthTimeline extends Component {
           </svg>
         </div>
         <div className="health-timeline-header-container">
-          <svg className="health-timeline-header">
+          <svg className="health-timeline-header" ref={this.header}>
             {
               this.state.categories.map((cat, i) => {
                 return (
                   <g transform={ `translate(${this.scaleX(cat)}, 0)` }>
-                    {/* <text
-                      x="0"
-                      y="25">
-                      { cat }
-                    </text> */}
+                    <text
+                      x={ this.scaleX.bandwidth() / 2 }
+                      y="20"
+                      textAnchor="middle"
+                      originalText={cat}>
+                      {cat}
+                    </text>
                     <circle
                       className="health-timeline-header__column"
                       cx={ this.scaleX.bandwidth() / 2 }
-                      cy="25"
+                      cy="50"
                       r={ cat === this.props.activeCategory ? 20 : 16 }
                       fill={ this.scaleColor(cat).background }
                       stroke={ this.scaleColor(cat).header }

@@ -75,7 +75,7 @@ class App extends Component {
       duration: indexChanged ? 300 : 750
     }
 
-    scroll.scrollTo(pos - 25, args); // TODO: 25 is hardcoded representation of header circle offset from top
+    scroll.scrollTo(pos - 50, args); // TODO: 50 is hardcoded representation of header circle offset from top
 
     if (indexChanged) {
       this.updateFocusedIndex(newIndex);
