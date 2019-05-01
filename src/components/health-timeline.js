@@ -236,6 +236,19 @@ class HealthTimeline extends Component {
         </div>
         <div className="health-timeline-header-container">
           <svg className="health-timeline-header" ref={this.header}>
+            <defs>
+              <linearGradient id="grad-header" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style={{ stopColor: "#fff", stopOpacity: "1" }} />
+                <stop offset="100%" style={{ stopColor: "#fff", stopOpacity: "0" }} />
+              </linearGradient>
+            </defs>
+            <rect
+              x={ 0 }
+              y={ 0 }
+              width={ this.state.width }
+              height={ 50 } // Sort of magic number here again, height of header area
+              fill="url(#grad-header)">
+            </rect>
             {
               this.state.categories.map((cat, i) => {
                 return (
