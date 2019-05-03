@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as d3 from 'd3';
 import * as Scroll from 'react-scroll'; // TODO: import only what's needed
 import Truncate from 'react-truncate';
 import Modal from 'react-modal';
@@ -11,6 +12,29 @@ import config from './config';
 import './app.scss';
 
 const scroll = Scroll.animateScroll;
+
+const colors = [
+  {
+    header: '#8FC5D8',
+    background: '#8FC5D877'
+  },
+  {
+    header: '#9DA5CC',
+    background: '#9DA5CC77'
+  },
+  {
+    header: '#DC8072',
+    background: '#DC807277'
+  },
+  {
+    header: '#AC599B',
+    background: '#AC599B77'
+  },
+  {
+    header: '#425AA3',
+    background: '#425AA377'
+  }
+];
 
 Modal.setAppElement('#root');
 
@@ -28,6 +52,10 @@ class App extends Component {
       readMoreEvent: null,
       modalIsOpen: false,
     }
+
+    this.scaleColor = d3.scaleOrdinal()
+      .domain([])
+      .range(colors);
   }
 
   componentDidMount() {
@@ -54,6 +82,10 @@ class App extends Component {
 
   onLoad = (data, error) => {
     if (data) {
+      const categories = [...new Set(data.events.map((event) => event.category))];
+      this.scaleColor = d3.scaleOrdinal()
+        .domain(categories)
+        .range(colors)
       this.setState({ events: data.events, activeCategory: data.events[0].category });
     } else {
       this.setState({ error })
@@ -134,7 +166,7 @@ class App extends Component {
               {this.state.events.map(event => {
                 return (
                   <div>
-                    <div className="card" style={{ backgroundColor: '#425AA3' }}>
+                    <div className="card" style={{ backgroundColor: this.scaleColor(event.category).header }}>
                       <p><b>{event.title}</b></p>
                       <p>
                         <Truncate
@@ -160,7 +192,8 @@ class App extends Component {
               minDate="1880"
               maxDate="2080"
               onEventClick={this.updateFocusedIndex}
-              onFocusedEventChange={this.scrollToEvent} />
+              onFocusedEventChange={this.scrollToEvent}
+              colorScale={this.scaleColor} />
           </div>
 
           <Modal
@@ -168,7 +201,7 @@ class App extends Component {
             onRequestClose={this.closeModal}
             style={modalStyles}
             contentLabel="Read full text from event">
-            <div className="card" style={{ backgroundColor: '#425AA3', height: 'auto', maxHeight: '90vh', margin: '0' }}>
+            <div className="card" style={{ backgroundColor: this.state.readMoreEvent ? this.scaleColor(this.state.readMoreEvent.category).header : '#fff', height: 'auto', maxHeight: '90vh', margin: '0' }}>
               {
                 this.state.readMoreEvent ?
                 <div>

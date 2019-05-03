@@ -9,49 +9,6 @@ import EventMarker from './event-marker';
 
 const Events = Scroll.Events;
 
-const colors = [
-  {
-    header: '#8FC5D8',
-    background: '#8FC5D877'
-  },
-  {
-    header: '#9DA5CC',
-    background: '#9DA5CC77'
-  },
-  {
-    header: '#DC8072',
-    background: '#DC807277'
-  },
-  {
-    header: '#AC599B',
-    background: '#AC599B77'
-  },
-  {
-    header: '#425AA3',
-    background: '#425AA377'
-  }
-  // {
-  //   header: '#8FC5D8',
-  //   background: '#F5FFFF'
-  // },
-  // {
-  //   header: '#9DA5CC',
-  //   background: '#EAF2FF'
-  // },
-  // {
-  //   header: '#DC8072',
-  //   background: '#FFE6D8'
-  // },
-  // {
-  //   header: '#AC599B',
-  //   background: '#FFF2FF'
-  // },
-  // {
-  //   header: '#425AA3',
-  //   background: '#DBF3FF'
-  // }
-];
-
 class HealthTimeline extends Component {
   constructor(props) {
     super(props);
@@ -114,10 +71,6 @@ class HealthTimeline extends Component {
     this.scaleY = d3.scaleTime()
       .domain(yDomain)
       .range([0, height]); // TODO: zoom factor?
-
-    this.scaleColor = d3.scaleOrdinal()
-      .domain(categories)
-      .range(colors)
 
     if (shouldSetState) {
       this.setState({
@@ -194,7 +147,7 @@ class HealthTimeline extends Component {
           <svg className="health-timeline-svg" width={this.state.width} height={this.state.height}>
             <defs>
               <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style={{ stopColor: this.scaleColor(this.props.activeCategory).background, stopOpacity: "0.5" }} />
+                <stop offset="0%" style={{ stopColor: this.props.colorScale(this.props.activeCategory).background, stopOpacity: "0.5" }} />
                 <stop offset="100%" style={{ stopColor: "#FAF9F9", stopOpacity: "1" }} />
               </linearGradient>
             </defs>
@@ -223,7 +176,7 @@ class HealthTimeline extends Component {
                     <EventMarker
                       focused={this.props.focusedIndex === i}
                       data={event}
-                      fill={this.scaleColor(event.category).header}
+                      fill={this.props.colorScale(event.category).header}
                       bandwidth={this.scaleX.bandwidth()}
                       translate={`${this.scaleX(event.category) + (this.scaleX.bandwidth() / 2)}, ${this.scaleY(moment(event.date))}`}
                     />
@@ -265,8 +218,8 @@ class HealthTimeline extends Component {
                       cx={ this.scaleX.bandwidth() / 2 }
                       cy="50"
                       r={ cat === this.props.activeCategory ? 20 : 16 }
-                      fill={ this.scaleColor(cat).background }
-                      stroke={ this.scaleColor(cat).header }
+                      fill={ this.props.colorScale(cat).background }
+                      stroke={ this.props.colorScale(cat).header }
                       strokeWidth={ this.props.activeCategory ? 7 : 5 }
                     />
                   </g>
