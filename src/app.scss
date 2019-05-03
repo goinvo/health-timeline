@@ -41,17 +41,40 @@
   pointer-events: none;
 
   text {
-    color: #535663
+    color: #535663;
   }
 }
 
 .health-timeline-carousel {
-  padding: 0 40px;
+  position: relative;
+  padding: 0;
   background-color: #fff;
 
-  .slick-arrow:before,
-  .slick-arrow:after {
-    color: #000;
+  .arrows-container {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: calc(50% + 400px);
+    transform: translate(0, -50%);
+    z-index: 1;
+
+    @media only screen and (min-width: 900px) {
+      display: block;
+    }
+  }
+
+  .slick-prev,
+  .slick-next {
+    position: static;
+    width: 45px;
+    height: 45px;
+    transform: rotate(90deg);
+  }
+
+  .slick-arrow:before {
+    color: #535663;
+    font-size: 40px;
+    font-weight: 700;
   }
 }
 
@@ -70,7 +93,7 @@
 
 .card {
   display: block;
-  max-width: 400px;
+  max-width: 800px;
   margin: 5px auto;
   color: #fff;
   padding: 5px 10px;

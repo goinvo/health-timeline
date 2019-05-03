@@ -54,10 +54,15 @@ class Carousel extends Component {
       beforeChange: (current, next) => this.goTo(next),
       vertical: true,
       verticalSwiping: true,
+      arrows: false,
     }
 
     return (
       <div className="health-timeline-carousel" id="health-timeline-carousel">
+        <div className="arrows-container">
+          <div className="slick-arrow slick-prev" onClick={() => this.carousel.current.slickGoTo(this.state.activeIndex - 1)}></div>
+          <div className="slick-arrow slick-next" onClick={() => this.carousel.current.slickGoTo(this.state.activeIndex + 1)}></div>
+        </div>
         <SlickCarousel {...carouselSettings} ref={this.carousel}>
           {this.props.children}
         </SlickCarousel>

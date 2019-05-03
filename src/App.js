@@ -144,7 +144,6 @@ class App extends Component {
     if (this.state.events.length) {
       const modalStyles = {
         content : {
-          maxWidth: this.state.width - 80,
           top: '5px',
           left: '50%',
           right: 'auto',
