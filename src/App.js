@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import * as Scroll from 'react-scroll'; // TODO: import only what's needed
+import Truncate from 'react-truncate';
+import Modal from 'react-modal';
 
 import HealthTimeline from './components/health-timeline';
 import Carousel from './components/carousel';
@@ -9,6 +11,8 @@ import config from './config';
 import './app.scss';
 
 const scroll = Scroll.animateScroll;
+
+Modal.setAppElement('#root');
 
 class App extends Component {
   constructor(props) {
@@ -21,6 +25,8 @@ class App extends Component {
       focusedIndex: 0,
       paddingTop: 0,
       activeCategory: null,
+      readMoreEvent: null,
+      modalIsOpen: false,
     }
   }
 
@@ -82,12 +88,42 @@ class App extends Component {
     }
   }
 
+  readMore = (text) => {
+    this.setState({
+      readMoreEvent: text,
+    }, () => {
+      this.openModal();
+    });
+  }
+
+  openModal = () => {
+    this.setState({modalIsOpen: true});
+  }
+
+  closeModal = () => {
+    this.setState({modalIsOpen: false});
+  }
+
   render() {
     if (this.state.error) {
       return <div>{this.state.error.message}</div>;
     }
 
     if (this.state.events.length) {
+      const modalStyles = {
+        content : {
+          maxWidth: this.state.width - 80,
+          top: '5px',
+          left: '50%',
+          right: 'auto',
+          bottom: 'auto',
+          border: 'none',
+          padding: '0',
+          marginRight: '-50%',
+          transform: 'translate(-50%, 0%)'
+        }
+      };
+
       return (
         <div className="App">
           <div className="timeline-wrapper">
@@ -100,7 +136,13 @@ class App extends Component {
                   <div>
                     <div className="card" style={{ backgroundColor: '#425AA3' }}>
                       <p><b>{event.title}</b></p>
-                      <p>{event.body}</p>
+                      <p>
+                        <Truncate
+                          lines={6}
+                          ellipsis={<span>... <button className="button--link" onClick={() => this.readMore(event)}>Read more</button></span>}>
+                          {event.body}
+                        </Truncate>
+                      </p>
                     </div>
                   </div>
                 )
@@ -120,6 +162,24 @@ class App extends Component {
               onEventClick={this.updateFocusedIndex}
               onFocusedEventChange={this.scrollToEvent} />
           </div>
+
+          <Modal
+            isOpen={this.state.modalIsOpen}
+            onRequestClose={this.closeModal}
+            style={modalStyles}
+            contentLabel="Read full text from event">
+            <div className="card" style={{ backgroundColor: '#425AA3', height: 'auto', maxHeight: '90vh', margin: '0' }}>
+              {
+                this.state.readMoreEvent ?
+                <div>
+                  <p><b>{this.state.readMoreEvent.title}</b></p>
+                  <p>{this.state.readMoreEvent.body}</p>
+                  <button className="button--link" onClick={this.closeModal}>Close</button>
+                </div>
+                : null
+              }
+            </div>
+          </Modal>
         </div>
       );
     }

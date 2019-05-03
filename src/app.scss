@@ -83,3 +83,21 @@
     text-align: center;
   }
 }
+
+.button {
+  &--link {
+    font-size: inherit;
+    font-family: inherit;
+    color: #fff;
+    text-decoration: underline;
+    outline: 0;
+    border: 0;
+    background: none;
+
+    &:hover,
+    &:focus {
+      color: #88fafa;
+      cursor: pointer;
+    }
+  }
+}
