@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from 'd3'; // TODO: Only take what we need
 import * as moment from 'moment';
 import * as Scroll from 'react-scroll'; // TODO: Only take what we need
-import { debounce } from 'lodash';
+import { debounce, throttle } from 'lodash';
 
 import Axis from './axis';
 import EventMarker from './event-marker';
@@ -90,7 +90,7 @@ class HealthTimeline extends Component {
     }
   }
 
-  getClosestPointTo = (e) => {
+  getClosestPointTo = debounce((e) => {
     let closest = null;
     let closestDistance = null;
     let closestIndex = 0;
@@ -114,30 +114,29 @@ class HealthTimeline extends Component {
     if (this.props.onFocusedEventChange) {
       this.props.onFocusedEventChange(closest, closestIndex);
     }
-  }
+  }, 100);
 
-  toggleBeyondScroll = (beyond) => {
-    if (this.props.onScrollBeyondTimeline) {
-      this.props.onScrollBeyondTimeline(beyond);
-    }
-    if (beyond) {
+  toggleBeyondScroll = (beyondScrollAmount) => {
+    if (this.props.onScrollBeyondTimeline && beyondScrollAmount) {
+      this.props.onScrollBeyondTimeline(beyondScrollAmount);
       this.setState({ headerClass: 'is-hidden'});
     } else {
+      this.props.onScrollBeyondTimeline(beyondScrollAmount);
       this.setState({ headerClass: ''});
     }
   }
 
-  checkScrollOperations = debounce((e) => {
-    let scrollPos = e.target.scrollTop
+  checkScrollOperations = throttle((e) => {
+    let scrollPos = e.target.scrollTop;
     let targetPos = this.scaleY(moment(this.state.events[this.state.events.length - 1].date));
 
     if (scrollPos >= targetPos) {
-      this.toggleBeyondScroll(true);
+      this.toggleBeyondScroll(parseInt(scrollPos - targetPos));
     } else {
-      this.toggleBeyondScroll(false);
+      this.toggleBeyondScroll(0);
       this.getClosestPointTo(e);
     }
-  }, 100);
+  }, 10);
 
   handleScroll = (e) => {
     e.persist();

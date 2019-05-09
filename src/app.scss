@@ -26,6 +26,10 @@
   }
 }
 
+.carousel-wrapper {
+  overflow: hidden;
+}
+
 .health-timeline-svg-container {
   position: relative;
   width: 100%;
@@ -66,9 +70,6 @@
   position: relative;
   padding: 0;
   background-color: #fff;
-  max-height: 300px;
-  overflow: hidden;
-  transition: max-height 300ms ease-in-out;
 
   &.is-hidden {
     max-height: 0;

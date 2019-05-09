@@ -58,7 +58,7 @@ class Carousel extends Component {
     }
 
     return (
-      <div className={"health-timeline-carousel" + ` ${this.props.className}`} id="health-timeline-carousel">
+      <div className="health-timeline-carousel" id="health-timeline-carousel">
         <div className="arrows-container">
           <div className="slick-arrow slick-prev" onClick={() => this.carousel.current.slickGoTo(this.state.activeIndex - 1)}></div>
           <div className="slick-arrow slick-next" onClick={() => this.carousel.current.slickGoTo(this.state.activeIndex + 1)}></div>
