@@ -1,7 +1,6 @@
 @import '~slick-carousel/slick/slick.css';
 @import '~slick-carousel/slick/slick-theme.css';
 
-html,
 body {
   overflow: hidden;
 }
@@ -23,5 +22,10 @@ body {
 
   @media only screen and (min-width: 800px) {
     font-size: 12pt;
+  }
+
+  &.unlocked {
+    position: static;
+    overflow: auto;
   }
 }

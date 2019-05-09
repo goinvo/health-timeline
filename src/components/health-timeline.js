@@ -89,19 +89,19 @@ class HealthTimeline extends Component {
     }
   }
 
-  getClosestPointTo = debounce((e) => {
+  goToClosestPoint = (scrollPos) => {
     let closest = null;
     let closestDistance = null;
     let closestIndex = 0;
 
     this.state.events.forEach((event, i) => {
       let eventPos = this.scaleY(moment(event.date));
-      let scrollPos = e.target.scrollTop + 50; // TODO: 50 is hardcoded representation of header circle offset from top
+      let scrollPosOffset = scrollPos + 50; // TODO: 50 is hardcoded representation of header circle offset from top
       if (i === 0) {
         closest = eventPos;
-        closestDistance = Math.abs(eventPos - scrollPos);
+        closestDistance = Math.abs(eventPos - scrollPosOffset);
       } else {
-        let thisDistance = Math.abs(eventPos - scrollPos);
+        let thisDistance = Math.abs(eventPos - scrollPosOffset);
         if (thisDistance <= closestDistance) {
           closest = eventPos;
           closestDistance = thisDistance;
@@ -113,11 +113,29 @@ class HealthTimeline extends Component {
     if (this.props.onFocusedEventChange) {
       this.props.onFocusedEventChange(closest, closestIndex);
     }
-  }, 100);
+  }
+
+  checkIfReachedEnd = debounce((e) => {
+    const scrollPos = e.target.scrollTop;
+    const endPos = this.scaleY(moment(this.state.events[this.state.events.length - 1].date).add(10, 'years'));
+
+    if (scrollPos >= endPos) {
+      if (this.props.onReachEnd) {
+        this.props.onReachEnd(true);
+      }
+    } else {
+      if (this.props.onReachEnd) {
+        this.props.onReachEnd(false);
+      }
+      this.goToClosestPoint(scrollPos);
+    }
+
+  }, 100)
 
   handleScroll = (e) => {
     e.persist();
-    this.getClosestPointTo(e);
+
+    this.checkIfReachedEnd(e);
   }
 
   truncate = (text, width) => {

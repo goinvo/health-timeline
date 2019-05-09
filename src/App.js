@@ -136,6 +136,14 @@ class App extends Component {
     this.setState({modalIsOpen: false});
   }
 
+  unlockScrolling = (pastEnd) => {
+    if (pastEnd) {
+      document.body.classList.add('unlocked');
+    } else {
+      document.body.classList.remove('unlocked');
+    }
+  }
+
   render() {
     if (this.state.error) {
       return <div>{this.state.error.message}</div>;
@@ -192,7 +200,69 @@ class App extends Component {
               maxDate="2080"
               onEventClick={this.updateFocusedIndex}
               onFocusedEventChange={this.scrollToEvent}
+              onReachEnd={this.unlockScrolling}
               colorScale={this.scaleColor} />
+          </div>
+          <div className="future">
+            <h1>Mooooaaaaarrrrr!</h1>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
+            <p>Here is more content y'all. Hell yeah. Let's keep scrolling.</p>
           </div>
 
           <Modal
