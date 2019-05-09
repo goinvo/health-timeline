@@ -35,6 +35,7 @@ class HealthTimeline extends Component {
       categories,
       events: props.events,
       totalYears,
+      headerClass: '',
     };
   }
 
@@ -89,7 +90,7 @@ class HealthTimeline extends Component {
     }
   }
 
-  getClosestPointTo = debounce((e) => {
+  getClosestPointTo = (e) => {
     let closest = null;
     let closestDistance = null;
     let closestIndex = 0;
@@ -113,11 +114,35 @@ class HealthTimeline extends Component {
     if (this.props.onFocusedEventChange) {
       this.props.onFocusedEventChange(closest, closestIndex);
     }
+  }
+
+  toggleBeyondScroll = (beyond) => {
+    if (this.props.onScrollBeyondTimeline) {
+      this.props.onScrollBeyondTimeline(beyond);
+    }
+    if (beyond) {
+      this.setState({ headerClass: 'is-hidden'});
+    } else {
+      this.setState({ headerClass: ''});
+    }
+  }
+
+  checkScrollOperations = debounce((e) => {
+    let scrollPos = e.target.scrollTop
+    let targetPos = this.scaleY(moment(this.state.events[this.state.events.length - 1].date));
+
+    if (scrollPos >= targetPos) {
+      this.toggleBeyondScroll(true);
+    } else {
+      this.toggleBeyondScroll(false);
+      this.getClosestPointTo(e);
+    }
   }, 100);
 
   handleScroll = (e) => {
     e.persist();
-    this.getClosestPointTo(e);
+
+    this.checkScrollOperations(e);
   }
 
   truncate = (text, width) => {
@@ -186,9 +211,12 @@ class HealthTimeline extends Component {
             </g>
             <Axis scale={this.scaleY} ticks={this.state.totalYears} translate={`translate(0, 0)`}/>
           </svg>
+          <div className="health-timeline-children" style={{ top: this.scaleY(moment(this.state.events[this.state.events.length - 1].date).add(10, 'years')) }}>
+            { this.props.children }
+          </div>
         </div>
         <div className="health-timeline-header-container">
-          <svg className="health-timeline-header" ref={this.header}>
+          <svg className={"health-timeline-header" + ` ${this.state.headerClass}`} ref={this.header}>
             <defs>
               <linearGradient id="grad-header" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" style={{ stopColor: "#fff", stopOpacity: "1" }} />

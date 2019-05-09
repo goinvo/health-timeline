@@ -51,6 +51,7 @@ class App extends Component {
       activeCategory: null,
       readMoreEvent: null,
       modalIsOpen: false,
+      carouselClass: '',
     }
 
     this.scaleColor = d3.scaleOrdinal()
@@ -136,6 +137,14 @@ class App extends Component {
     this.setState({modalIsOpen: false});
   }
 
+  toggleCarousel = (hide) => {
+    if (hide) {
+      this.setState({ carouselClass: 'is-hidden' });
+    } else {
+      this.setState({ carouselClass: '' });
+    }
+  }
+
   render() {
     if (this.state.error) {
       return <div>{this.state.error.message}</div>;
@@ -161,7 +170,8 @@ class App extends Component {
             <Carousel
               activeIndex={this.state.focusedIndex}
               onHeightChange={this.updatePaddingOffset}
-              onSlideChange={this.updateFocusedIndex}>
+              onSlideChange={this.updateFocusedIndex}
+              className={this.state.carouselClass}>
               {this.state.events.map(event => {
                 return (
                   <div>
@@ -192,7 +202,82 @@ class App extends Component {
               maxDate="2080"
               onEventClick={this.updateFocusedIndex}
               onFocusedEventChange={this.scrollToEvent}
-              colorScale={this.scaleColor} />
+              onScrollBeyondTimeline={this.toggleCarousel}
+              colorScale={this.scaleColor}>
+              <div>
+                <h1>MOOOOAAAARRRRRR!!!!</h1>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+                <p>Here is more content! Hell ya! Let's keep it going...</p>
+              </div>
+            </HealthTimeline>
           </div>
 
           <Modal
