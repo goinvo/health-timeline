@@ -185,11 +185,13 @@ class App extends Component {
         <div className="App">
           <div className="timeline-wrapper">
             <div className="timeline-data-select">
-              <Select
-                value={this.state.dataset}
-                options={this.state.datasets}
-                onChange={this.handleDatasetChange}
-              />
+              <div className="timeline-data-select__select">
+                <Select
+                  value={this.state.dataset}
+                  options={this.state.datasets}
+                  onChange={this.handleDatasetChange}
+                />
+              </div>
             </div>
             <div className="carousel-wrapper" ref={this.carouselWrapper}>
               <Carousel

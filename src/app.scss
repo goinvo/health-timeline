@@ -26,6 +26,13 @@
   }
 }
 
+.timeline-data-select {
+   &__select {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}
+
 .carousel-wrapper {
   overflow: hidden;
 }
