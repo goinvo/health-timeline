@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import Truncate from 'react-truncate';
 import Modal from 'react-modal';
+import Select from 'react-select';
 import jQuery from 'jquery';
 
 import HealthTimeline from './components/health-timeline';
@@ -42,6 +43,7 @@ class App extends Component {
 
     this.state = {
       events: [],
+      allEvents: [],
       width: window.innerWidth,
       error: null,
       focusedIndex: 0,
@@ -49,6 +51,8 @@ class App extends Component {
       activeCategory: null,
       readMoreEvent: null,
       modalIsOpen: false,
+      datasets: [],
+      dataset: 'all',
     }
 
     this.carouselWrapper = React.createRef();
@@ -86,7 +90,23 @@ class App extends Component {
       this.scaleColor = d3.scaleOrdinal()
         .domain(categories)
         .range(colors)
-      this.setState({ events: data.events, activeCategory: data.events[0].category });
+
+      const dataset = data.events.filter(event => {
+        return event.dataset.includes(data.datasets[0]);
+      });
+
+      const datasets = data.datasets.map(datasetName => ({
+        value: datasetName,
+        label: datasetName === 'all' ? 'Precision Medicine' : `Precision ${datasetName.charAt(0).toUpperCase() + datasetName.slice(1)} Medicine`
+      }));
+
+      this.setState({
+        events: dataset,
+        allEvents: data.events,
+        datasets,
+        dataset: datasets[0],
+        activeCategory: data.events[0].category
+      });
     } else {
       this.setState({ error })
     }
@@ -130,6 +150,18 @@ class App extends Component {
     jQuery(this.carouselWrapper.current).css('max-height', maxHeight);
   }
 
+  handleDatasetChange = (dataset) => {
+
+    const events = this.state.allEvents.filter(event => {
+      return event.dataset.includes(dataset.value);
+    });
+
+    this.setState({
+      dataset,
+      events
+    })
+  }
+
   render() {
     if (this.state.error) {
       return <div>{this.state.error.message}</div>;
@@ -152,6 +184,13 @@ class App extends Component {
       return (
         <div className="App">
           <div className="timeline-wrapper">
+            <div className="timeline-data-select">
+              <Select
+                value={this.state.dataset}
+                options={this.state.datasets}
+                onChange={this.handleDatasetChange}
+              />
+            </div>
             <div className="carousel-wrapper" ref={this.carouselWrapper}>
               <Carousel
                 activeIndex={this.state.focusedIndex}

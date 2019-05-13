@@ -16,7 +16,6 @@ class HealthTimeline extends Component {
   constructor(props) {
     super(props);
     // TODO: Make all these configurable with props (pixelsPerYear, zoomFactor (initial?), outer year range padding, etc)
-    // TODO: Should really make sure the events are sorted by date
 
     this.init(props, false);
 
@@ -33,11 +32,15 @@ class HealthTimeline extends Component {
 
     const categories = [...new Set(props.events.map((event) => event.category))];
 
+    const events = props.events.concat().sort((a, b) => {
+      return moment.utc(a.timeStamp).diff(moment.utc(b.timeStamp));
+    })
+
     this.state = {
       width: props.width,
       height,
       categories,
-      events: props.events,
+      events,
       totalYears,
       headerClass: '',
       scrolling: false,
@@ -93,11 +96,15 @@ class HealthTimeline extends Component {
       .domain(yDomain)
       .range([0, height]); // TODO: zoom factor?
 
+    const events = props.events.concat().sort((a, b) => {
+      return moment.utc(a.timeStamp).diff(moment.utc(b.timeStamp));
+    })
+
     if (shouldSetState) {
       this.setState({
         width: props.width,
         height,
-        events: props.events,
+        events,
         categories,
         totalYears
       })

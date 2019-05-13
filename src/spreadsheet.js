@@ -6,20 +6,33 @@ export function load(callback) {
     window.gapi.client.sheets.spreadsheets.values
       .get({
         spreadsheetId: config.spreadsheetId,
-        range: "od1!A3:T"
+        range: "od1!A3:X"
       })
       .then(
         response => {
           const data = response.result.values;
 
-          const events = data.map(event => ({
-            date: moment(`${event[0]}-${event[1]}-${event[2]}`, 'YYYY-MM-DD').toString(),
-            title: event[9],
-            body: event[10],
-            category: event[16] ? event[16] : "Medicine", // TODO: Placeholder for uncategorized events
-            milestone: event[17]
-          })) || [];
+          const datasets = [];
+
+          const events = data.map(event => {
+            [22, 23].forEach(n => {
+              if (!datasets.includes(event[n]) && event[n] !== undefined) {
+                datasets.push(event[n]);
+              }
+            });
+
+            return {
+              date: moment(`${event[0]}-${event[1]}-${event[2]}`, 'YYYY-MM-DD').toString(),
+              title: event[9],
+              body: event[10],
+              category: event[16] ? event[16] : "Medicine", // TODO: Placeholder for uncategorized events
+              milestone: event[17],
+              dataset: [ event[22], event[23] ],
+            };
+          }) || [];
+
           callback({
+            datasets,
             events
           });
         },
