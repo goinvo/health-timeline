@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3'; // TODO: Only take what we need
 import * as moment from 'moment';
-import * as Scroll from 'react-scroll'; // TODO: Only take what we need
 import { debounce, throttle } from 'lodash';
 
 import Axis from './axis';
 import EventMarker from './event-marker';
-
-const Events = Scroll.Events;
 
 class HealthTimeline extends Component {
   constructor(props) {
@@ -215,7 +212,7 @@ class HealthTimeline extends Component {
           </div>
         </div>
         <div className="health-timeline-header-container">
-          <svg className={"health-timeline-header" + ` ${this.state.headerClass}`} ref={this.header}>
+          <svg className={`health-timeline-header ${this.state.headerClass}`} ref={this.header}>
             <defs>
               <linearGradient id="grad-header" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" style={{ stopColor: "#fff", stopOpacity: "1" }} />
