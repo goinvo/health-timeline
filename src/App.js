@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
-import * as Scroll from 'react-scroll'; // TODO: import only what's needed
 import Truncate from 'react-truncate';
 import Modal from 'react-modal';
 import jQuery from 'jquery';
@@ -11,8 +10,6 @@ import { load } from './spreadsheet';
 import config from './config';
 
 import './app.scss';
-
-const scroll = Scroll.animateScroll;
 
 const colors = [
   {
@@ -108,21 +105,6 @@ class App extends Component {
     this.setState({ focusedIndex: i, activeCategory: this.state.events[i].category });
   }
 
-  scrollToEvent = (pos, newIndex = null) => {
-    const indexChanged = !(newIndex === null);
-
-    const args = {
-      containerId: 'scrollContainer', // TODO: Should use ref from component here instead?
-      duration: indexChanged ? 300 : 750
-    }
-
-    scroll.scrollTo(pos - 50, args); // TODO: 50 is hardcoded representation of header circle offset from top
-
-    if (indexChanged) {
-      this.updateFocusedIndex(newIndex);
-    }
-  }
-
   readMore = (text) => {
     this.setState({
       readMoreEvent: text,
@@ -205,7 +187,7 @@ class App extends Component {
               minDate="1880"
               maxDate="2080"
               onEventClick={this.updateFocusedIndex}
-              onFocusedEventChange={this.scrollToEvent}
+              onFocusedEventChange={this.updateFocusedIndex}
               onScrollBeyondTimeline={this.toggleCarousel}
               colorScale={this.scaleColor}>
             </HealthTimeline>

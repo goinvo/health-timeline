@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3'; // TODO: Only take what we need
 import * as moment from 'moment';
+import { Events, animateScroll } from 'react-scroll';
 import { debounce, throttle } from 'lodash';
 
 import Axis from './axis';
 import EventMarker from './event-marker';
+
+const scroll = animateScroll;
+const scrollEvents = Events;
+
+const headerCircleCY = 50;
 
 class HealthTimeline extends Component {
   constructor(props) {
@@ -15,6 +21,7 @@ class HealthTimeline extends Component {
     this.init(props, false);
 
     this.header = React.createRef();
+    this.scrollContainer = React.createRef();
 
     const pixelsPerYear = 20;
     const zoomFactor = 1;
@@ -33,16 +40,32 @@ class HealthTimeline extends Component {
       events: props.events,
       totalYears,
       headerClass: '',
+      scrolling: false,
     };
+  }
+
+  componentDidMount() {
+    scrollEvents.scrollEvent.register('end', () => {
+      if (this.state.scrolling) {
+        this.setState({ scrolling: false });
+      }
+    });
+
+    const pos = this.scaleY(moment(this.state.events[this.props.focusedIndex].date));
+    this.scrollToEvent(pos);
+  }
+
+  componentWillUnmount() {
+    scrollEvents.scrollEvent.remove('end');
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps !== this.props) {
       this.init(nextProps);
 
-      if (this.props.onFocusedEventChange && (nextProps.focusedIndex !== this.props.focusedIndex)) {
+      if (nextProps.focusedIndex !== this.props.focusedIndex) {
         const pos = this.scaleY(moment(this.state.events[nextProps.focusedIndex].date));
-        this.props.onFocusedEventChange(pos);
+        this.scrollToEvent(pos);
       }
     }
   }
@@ -87,6 +110,17 @@ class HealthTimeline extends Component {
     }
   }
 
+  scrollToEvent = (pos) => {
+    const args = {
+      containerId: this.scrollContainer.current.id, // NOTE: Doesn't seem possible to pass the element here, needs an ID for this library
+      duration: 750
+    }
+
+    this.setState({ scrolling: true }, () => {
+      scroll.scrollTo(pos - headerCircleCY, args);
+    })
+  }
+
   getClosestPointTo = debounce((e) => {
     let closest = null;
     let closestDistance = null;
@@ -94,7 +128,7 @@ class HealthTimeline extends Component {
 
     this.state.events.forEach((event, i) => {
       let eventPos = this.scaleY(moment(event.date));
-      let scrollPos = e.target.scrollTop + 50; // TODO: 50 is hardcoded representation of header circle offset from top
+      let scrollPos = e.target.scrollTop + headerCircleCY;
       if (i === 0) {
         closest = eventPos;
         closestDistance = Math.abs(eventPos - scrollPos);
@@ -108,8 +142,9 @@ class HealthTimeline extends Component {
       }
     })
 
+    this.scrollToEvent(closest, closestIndex);
     if (this.props.onFocusedEventChange) {
-      this.props.onFocusedEventChange(closest, closestIndex);
+      this.props.onFocusedEventChange(closestIndex);
     }
   }, 100);
 
@@ -138,7 +173,9 @@ class HealthTimeline extends Component {
   handleScroll = (e) => {
     e.persist();
 
-    this.checkScrollOperations(e);
+    if (!this.state.scrolling) {
+      this.checkScrollOperations(e);
+    }
   }
 
   truncate = (text, width) => {
@@ -161,10 +198,9 @@ class HealthTimeline extends Component {
   }
 
   render() {
-    // TODO: Timeline header needs to tell timeline body of its height
     return (
       <div className="health-timeline">
-        <div className="health-timeline-svg-container" onScroll={this.handleScroll} id="scrollContainer">
+        <div className="health-timeline-svg-container" onScroll={this.handleScroll} id="health-timeline-scroll-container" ref={this.scrollContainer}>
           <svg className="health-timeline-svg" width={this.state.width} height={this.state.height}>
             <defs>
               <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -223,7 +259,7 @@ class HealthTimeline extends Component {
               x={ 0 }
               y={ 0 }
               width={ this.state.width }
-              height={ 50 } // Sort of magic number here again, height of header area
+              height={ headerCircleCY }
               fill="url(#grad-header)">
             </rect>
             {
@@ -240,7 +276,7 @@ class HealthTimeline extends Component {
                     <circle
                       className="health-timeline-header__column"
                       cx={ this.scaleX.bandwidth() / 2 }
-                      cy="50"
+                      cy={ headerCircleCY }
                       r={ cat === this.props.activeCategory ? 20 : 16 }
                       fill={ this.props.colorScale(cat).background }
                       stroke={ this.props.colorScale(cat).header }
