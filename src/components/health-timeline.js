@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3'; // TODO: Only take what we need
 import * as moment from 'moment';
-import * as Scroll from 'react-scroll'; // TODO: Only take what we need
-import { debounce } from 'lodash';
+import { debounce, throttle } from 'lodash';
 
 import Axis from './axis';
 import EventMarker from './event-marker';
-
-const Events = Scroll.Events;
 
 class HealthTimeline extends Component {
   constructor(props) {
@@ -35,6 +32,7 @@ class HealthTimeline extends Component {
       categories,
       events: props.events,
       totalYears,
+      headerClass: '',
     };
   }
 
@@ -115,9 +113,32 @@ class HealthTimeline extends Component {
     }
   }, 100);
 
+  toggleBeyondScroll = (beyondScrollAmount) => {
+    if (this.props.onScrollBeyondTimeline && beyondScrollAmount) {
+      this.props.onScrollBeyondTimeline(beyondScrollAmount);
+      this.setState({ headerClass: 'is-hidden'});
+    } else {
+      this.props.onScrollBeyondTimeline(beyondScrollAmount);
+      this.setState({ headerClass: ''});
+    }
+  }
+
+  checkScrollOperations = throttle((e) => {
+    let scrollPos = e.target.scrollTop;
+    let targetPos = this.scaleY(moment(this.state.events[this.state.events.length - 1].date));
+
+    if (scrollPos >= targetPos) {
+      this.toggleBeyondScroll(parseInt(scrollPos - targetPos));
+    } else {
+      this.toggleBeyondScroll(0);
+      this.getClosestPointTo(e);
+    }
+  }, 10);
+
   handleScroll = (e) => {
     e.persist();
-    this.getClosestPointTo(e);
+
+    this.checkScrollOperations(e);
   }
 
   truncate = (text, width) => {
@@ -186,9 +207,12 @@ class HealthTimeline extends Component {
             </g>
             <Axis scale={this.scaleY} ticks={this.state.totalYears} translate={`translate(0, 0)`}/>
           </svg>
+          <div className="health-timeline-children" style={{ top: this.scaleY(moment(this.state.events[this.state.events.length - 1].date).add(10, 'years')) }}>
+            { this.props.children }
+          </div>
         </div>
         <div className="health-timeline-header-container">
-          <svg className="health-timeline-header" ref={this.header}>
+          <svg className={`health-timeline-header ${this.state.headerClass}`} ref={this.header}>
             <defs>
               <linearGradient id="grad-header" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" style={{ stopColor: "#fff", stopOpacity: "1" }} />

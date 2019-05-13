@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import * as Scroll from 'react-scroll'; // TODO: import only what's needed
 import Truncate from 'react-truncate';
 import Modal from 'react-modal';
+import jQuery from 'jquery';
 
 import HealthTimeline from './components/health-timeline';
 import Carousel from './components/carousel';
@@ -52,6 +53,8 @@ class App extends Component {
       readMoreEvent: null,
       modalIsOpen: false,
     }
+
+    this.carouselWrapper = React.createRef();
 
     this.scaleColor = d3.scaleOrdinal()
       .domain([])
@@ -136,6 +139,15 @@ class App extends Component {
     this.setState({modalIsOpen: false});
   }
 
+  toggleCarousel = (beyondScrollAmount) => {
+    const calcMaxHeight = 220 - beyondScrollAmount;
+    const maxHeight = calcMaxHeight >= 220 ? 220 : calcMaxHeight <= 0 ? 0 : calcMaxHeight;
+    // NOTE: I don't know why this commented out line doesn't work,
+    // but using jQuery does. Would be lovely to avoid using jQuery though.
+    // this.carouselWrapper.current.style.maxHeight = maxHeight;
+    jQuery(this.carouselWrapper.current).css('max-height', maxHeight);
+  }
+
   render() {
     if (this.state.error) {
       return <div>{this.state.error.message}</div>;
@@ -158,27 +170,29 @@ class App extends Component {
       return (
         <div className="App">
           <div className="timeline-wrapper">
-            <Carousel
-              activeIndex={this.state.focusedIndex}
-              onHeightChange={this.updatePaddingOffset}
-              onSlideChange={this.updateFocusedIndex}>
-              {this.state.events.map(event => {
-                return (
-                  <div>
-                    <div className="card" style={{ backgroundColor: this.scaleColor(event.category).header }}>
-                      <p><b>{event.title}</b></p>
-                      <p>
-                        <Truncate
-                          lines={6}
-                          ellipsis={<span>... <button className="button--link" onClick={() => this.readMore(event)}>Read more</button></span>}>
-                          {event.body}
-                        </Truncate>
-                      </p>
+            <div className="carousel-wrapper" ref={this.carouselWrapper}>
+              <Carousel
+                activeIndex={this.state.focusedIndex}
+                onHeightChange={this.updatePaddingOffset}
+                onSlideChange={this.updateFocusedIndex}>
+                {this.state.events.map(event => {
+                  return (
+                    <div>
+                      <div className="card" style={{ backgroundColor: this.scaleColor(event.category).header }}>
+                        <p><b>{event.title}</b></p>
+                        <p>
+                          <Truncate
+                            lines={6}
+                            ellipsis={<span>... <button className="button--link" onClick={() => this.readMore(event)}>Read more</button></span>}>
+                            {event.body}
+                          </Truncate>
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                )
-              })}
-            </Carousel>
+                  )
+                })}
+              </Carousel>
+            </div>
             {
               // TODO: minDate and maxDate are placeholders
             }
@@ -192,7 +206,9 @@ class App extends Component {
               maxDate="2080"
               onEventClick={this.updateFocusedIndex}
               onFocusedEventChange={this.scrollToEvent}
-              colorScale={this.scaleColor} />
+              onScrollBeyondTimeline={this.toggleCarousel}
+              colorScale={this.scaleColor}>
+            </HealthTimeline>
           </div>
 
           <Modal
