@@ -1,20 +1,25 @@
 import React, { Component } from 'react';
-import { Text } from '@vx/text';
+// import { Text } from '@vx/text';
 
 class EventMarker extends Component {
-
-  handleClick = () => {
-
-  }
-
   render() {
-    const milestoneHeight = 50;
-    const milestoneWidth = this.props.bandwidth - 40;
+    // const milestoneHeight = 50;
+    // const milestoneWidth = this.props.bandwidth - 40;
 
     return (
       <g
         className="health-timeline-event"
         transform={ `translate(${ this.props.translate })` }>
+        {
+          this.props.data.milestone ?
+            <circle
+              cx="0"
+              cy="0"
+              r={ 20 }
+              fill={ this.props.fill + "99" }>
+            </circle>
+          : null
+        }
         <circle
           cx="0"
           cy="0"
@@ -23,17 +28,6 @@ class EventMarker extends Component {
         </circle>
         {/* {
           this.props.data.milestone ?
-          <g>
-            <rect
-              x={ -(milestoneWidth / 2) }
-              y={ -(milestoneHeight / 2) }
-              width={ milestoneWidth }
-              height={ milestoneHeight }
-              rx="25"
-              ry="25"
-              stroke={ this.props.fill }
-              strokeWidth={ this.props.focused ? 5 : 2 }
-              fill="#fff"/>
               <Text
                 x="0"
                 y="0"
@@ -42,14 +36,7 @@ class EventMarker extends Component {
                 verticalAnchor="middle">
                 {this.props.data.title}
               </Text>
-          </g>
-          :
-            <circle
-              cx="0"
-              cy="0"
-              r={ this.props.focused ? 10: 5 }
-              fill={ this.props.fill }>
-            </circle>
+          : null
         } */}
       </g>
     )
