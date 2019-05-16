@@ -151,3 +151,16 @@
     }
   }
 }
+
+.health-timeline-future {
+  background-color: #FAF9F9;
+  border-radius: 100px 100px 0 0;
+
+  &__content {
+    padding: 50px 20px;
+  }
+
+  h2 {
+    text-align: center;
+  }
+}

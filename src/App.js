@@ -52,7 +52,7 @@ class App extends Component {
       readMoreEvent: null,
       modalIsOpen: false,
       datasets: [],
-      dataset: 'all',
+      dataset: { value: 'all' },
     }
 
     this.carouselWrapper = React.createRef();
@@ -158,8 +158,41 @@ class App extends Component {
 
     this.setState({
       dataset,
-      events
+      events,
+      focusedIndex: 0,
     })
+  }
+
+  renderFuture = () => {
+    switch (this.state.dataset.value) {
+      case 'all':
+        return (
+          <div>
+            <h2>The future of Precision Medicine</h2>
+          </div>
+        );
+        break;
+      case 'autism':
+        return (
+          <div>
+            <h2>The future of Precision Autism Medicine</h2>
+          </div>
+        );
+        break;
+      case 'cancer':
+        return (
+          <div>
+            <h2>The future of Precision Cancer Medicine</h2>
+          </div>
+        );
+        break;
+      default:
+        return (
+          <div>
+            <h2>The future!</h2>
+          </div>
+        );
+    }
   }
 
   render() {
@@ -231,6 +264,11 @@ class App extends Component {
               onFocusedEventChange={this.updateFocusedIndex}
               onScrollBeyondTimeline={this.toggleCarousel}
               colorScale={this.scaleColor}>
+              <div className="health-timeline-future">
+                <div className="health-timeline-future__content">
+                  { this.renderFuture() }
+                </div>
+              </div>
             </HealthTimeline>
           </div>
 

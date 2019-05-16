@@ -218,6 +218,9 @@ class HealthTimeline extends Component {
             <g className="health-timeline-columns">
               {
                 this.state.categories.map((cat) => {
+                  const middleColPos = (this.state.width / 2) - this.scaleX(cat);
+                  const endOfTimelinePos = this.scaleY(moment(this.state.events[this.state.events.length - 1].date).add(1, 'years'));
+                  const pathLength = this.state.width < 700 ? 200 : 400;
                   return (
                     <g className="health-timeline-column"
                        transform={ `translate(${this.scaleX(cat)}, 0)` }>
@@ -225,9 +228,16 @@ class HealthTimeline extends Component {
                         x={ 0 }
                         y={ 0 }
                         width={ this.scaleX.bandwidth() }
-                        height={ this.state.height }
+                        height={ endOfTimelinePos }
                         fill={ this.props.activeCategory === cat ? "url(#grad1)" : "#FAF9F9"}>
                       </rect>
+                      <path
+                        transform={ `translate(0, ${endOfTimelinePos})`}
+                        d={`M${ this.scaleX.bandwidth() / 2},0C${ this.scaleX.bandwidth() / 2},${pathLength / 2} ${middleColPos},${pathLength / 2} ${middleColPos},${pathLength}`}
+                        fill="none"
+                        stroke="#FAF9F9"
+                        strokeWidth={ this.scaleX.bandwidth() }>
+                      </path>
                     </g>
                   )
                 })
@@ -250,7 +260,7 @@ class HealthTimeline extends Component {
             </g>
             <Axis scale={this.scaleY} ticks={this.state.totalYears} translate={`translate(0, 0)`}/>
           </svg>
-          <div className="health-timeline-children" style={{ top: this.scaleY(moment(this.state.events[this.state.events.length - 1].date).add(10, 'years')) }}>
+          <div className="health-timeline-children" style={{ top: this.scaleY(moment(this.state.events[this.state.events.length - 1].date).add(1, 'years')) + (this.state.width < 700 ? 200 : 400) }}>
             { this.props.children }
           </div>
         </div>
