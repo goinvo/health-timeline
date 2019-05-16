@@ -15,15 +15,25 @@ class EventMarker extends Component {
             <circle
               cx="0"
               cy="0"
-              r={ 20 }
-              fill={ this.props.fill + "99" }>
+              r="20"
+              fill={ this.props.fill + "44" }>
+            </circle>
+          : null
+        }
+        {
+          this.props.data.milestone ?
+            <circle
+              cx="0"
+              cy="0"
+              className="milestone-ring"
+              stroke={ this.props.fill }>
             </circle>
           : null
         }
         <circle
           cx="0"
           cy="0"
-          r={ 10 }
+          className={ this.props.data.milestone ? "event event--milestone" : "event" }
           fill={ this.props.fill }>
         </circle>
         {/* {

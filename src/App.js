@@ -4,11 +4,18 @@ import Truncate from 'react-truncate';
 import Modal from 'react-modal';
 import Select from 'react-select';
 import jQuery from 'jquery';
+import moment from 'moment';
 
 import HealthTimeline from './components/health-timeline';
 import Carousel from './components/carousel';
 import { load } from './spreadsheet';
 import config from './config';
+
+import { ReactComponent as IconCulture } from './images/icons/culture.svg';
+import { ReactComponent as IconData } from './images/icons/data.svg';
+import { ReactComponent as IconMedicine } from './images/icons/medicine.svg';
+import { ReactComponent as IconPolicy } from './images/icons/policy.svg';
+import { ReactComponent as IconScience } from './images/icons/science.svg';
 
 import './app.scss';
 
@@ -195,6 +202,23 @@ class App extends Component {
     }
   }
 
+  renderIcon = (cat) => {
+    switch (cat) {
+      case 'Culture':
+        return <IconCulture />;
+      case 'Data':
+        return <IconData />;
+      case 'Medicine':
+        return <IconMedicine />;
+      case 'Policy':
+        return <IconPolicy />;
+      case 'Science':
+        return <IconScience />;
+      default:
+        return;
+    }
+  }
+
   render() {
     if (this.state.error) {
       return <div>{this.state.error.message}</div>;
@@ -235,14 +259,23 @@ class App extends Component {
                   return (
                     <div>
                       <div className="card" style={{ backgroundColor: this.scaleColor(event.category).header }}>
-                        <p><b>{event.title}</b></p>
-                        <p>
-                          <Truncate
-                            lines={6}
-                            ellipsis={<span>... <button className="button--link" onClick={() => this.readMore(event)}>Read more</button></span>}>
-                            {event.body}
-                          </Truncate>
-                        </p>
+                        <div className="card__content">
+                          <div className="card__content-left">
+                            { this.renderIcon(event.category) }
+                            <p className="text--bold">{ event.category }</p>
+                            <p className="text--lg text--bold">{ moment(event.date).year() }</p>
+                          </div>
+                          <div className="card__content-right">
+                            <p className="text--bold">{event.title}</p>
+                            <p>
+                              <Truncate
+                                lines={6}
+                                ellipsis={<span>... <button className="button--link" onClick={() => this.readMore(event)}>Read more</button></span>}>
+                                {event.body}
+                              </Truncate>
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   )
