@@ -200,7 +200,7 @@
   r: 10px;
 
   &--milestone {
-    animation: milestonePulse 3s infinite;
+    animation: milestonePulse 2s infinite;
   }
 }
 
@@ -208,7 +208,7 @@
   r: 20px;
   stroke-width: 2px;
   fill: none;
-  animation: milestoneRing 3s infinite;
+  animation: milestoneRing 2s infinite;
 }
 
 @keyframes milestonePulse {
@@ -220,6 +220,6 @@
 
 @keyframes milestoneRing {
   0% { r: 10px; opacity: 1; }
-  50% { r: 20px; opacity: 0; }
+  50% { r: 50px; opacity: 0; }
   100% { r: 0px; opacity: 0; }
 }
