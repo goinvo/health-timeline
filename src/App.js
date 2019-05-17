@@ -55,6 +55,7 @@ class App extends Component {
       error: null,
       focusedIndex: 0,
       paddingTop: 0,
+      categories: [ 'Medicine', 'Science', 'Data', 'Culture', 'Policy' ],
       activeCategory: null,
       readMoreEvent: null,
       modalIsOpen: false,
@@ -93,9 +94,8 @@ class App extends Component {
 
   onLoad = (data, error) => {
     if (data) {
-      const categories = [...new Set(data.events.map((event) => event.category))];
       this.scaleColor = d3.scaleOrdinal()
-        .domain(categories)
+        .domain(this.state.categories)
         .range(colors)
 
       const dataset = data.events.filter(event => {
@@ -287,6 +287,7 @@ class App extends Component {
             }
             <HealthTimeline
               focusedIndex={this.state.focusedIndex}
+              categories={this.state.categories}
               activeCategory={this.state.activeCategory}
               offsetTop={this.state.paddingTop}
               events={this.state.events}

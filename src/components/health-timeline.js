@@ -30,7 +30,7 @@ class HealthTimeline extends Component {
     const totalYears = maxDate.diff(minDate, 'years');
     const height = totalYears * pixelsPerYear;
 
-    const categories = [...new Set(props.events.map((event) => event.category))];
+    const categories = props.categories || [...new Set(props.events.map((event) => event.category))];
 
     const events = props.events.concat().sort((a, b) => {
       return moment.utc(a.timeStamp).diff(moment.utc(b.timeStamp));
@@ -78,7 +78,7 @@ class HealthTimeline extends Component {
   }
 
   init = (props, shouldSetState = true) => {
-    const categories = [...new Set(props.events.map((event) => event.category))];
+    const categories = props.categories || [...new Set(props.events.map((event) => event.category))];
     const allDates = props.events.map((event) => event.date);
     const pixelsPerYear = 20;
     const minDate = moment(props.minDate) || moment(d3.min(allDates)).subtract(10, 'years'); // TODO: Or support custom start/end dates
@@ -107,6 +107,9 @@ class HealthTimeline extends Component {
         events,
         categories,
         totalYears
+      }, () => {
+        const pos = this.scaleY(moment(this.state.events[props.focusedIndex].date));
+        this.scrollToEvent(pos);
       })
     }
   }
