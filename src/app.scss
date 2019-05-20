@@ -18,7 +18,13 @@
   }
 
   a {
+    color: #535663;
     padding: 10px 20px;
+
+    &:hover,
+    &:focus {
+      color: darken(#535663, 15%);
+    }
   }
 
   .push-right {
@@ -101,7 +107,7 @@
     display: none;
     position: absolute;
     top: 50%;
-    left: calc(50% + 400px);
+    right: 20px;
     transform: translate(0, -50%);
     z-index: 1;
 
@@ -113,15 +119,33 @@
   .slick-prev,
   .slick-next {
     position: static;
-    width: 45px;
-    height: 45px;
-    transform: rotate(90deg);
+    width: auto;
+    height: auto;
+    padding: 0 10px;
+    transform: none;
   }
 
   .slick-arrow:before {
-    color: #535663;
-    font-size: 40px;
+    display: block;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 100px;
     font-weight: 700;
+  }
+
+  .slick-arrow:hover,
+  .slick-arrow:focus {
+    &:before {
+      color: rgba(255, 255, 255, 0.8);
+    }
+  }
+
+  .slick-prev:before {
+    content: '\221F';
+    transform: rotate(135deg) translate(15px, -37px);
+  }
+  .slick-next:before {
+    content: '\221F';
+    transform: rotate(-45deg) translate(15px, -37px);
   }
 }
 
@@ -140,8 +164,6 @@
 
 .card {
   display: block;
-  max-width: 800px;
-  margin: 5px auto;
   color: #fff;
   padding: 5px 10px;
   border-radius: 4px;
@@ -156,6 +178,8 @@
 
   &__content {
     display: flex;
+    max-width: 700px;
+    margin: 0 auto;
 
     &-left {
       margin-right: 20px;

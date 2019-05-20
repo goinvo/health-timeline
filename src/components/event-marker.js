@@ -44,7 +44,8 @@ class EventMarker extends Component {
                 y="0"
                 width={ milestoneWidth }
                 textAnchor={this.props.alignText}
-                verticalAnchor="middle">
+                verticalAnchor="middle"
+                fill="#535663">
                 {this.props.data.milestoneText}
               </Text>
           : null
