@@ -268,7 +268,7 @@ class App extends Component {
               <div className="timeline-header__row">
                 <a href="https://goinvo.github.io/PrecisionMedicineMap/">About</a>
                 <a href="https://docs.google.com/spreadsheets/d/1UaJB6GqmCOJ9mAaNzEark9Of4AIb7wTx346E7gNlhGE/edit">Suggest events to add to the timeline</a>
-                <a href="mailto:precision-medicine-timeline@goinvo.com" className="push-right">Feedback</a>
+                <a href="mailto:timeline@goinvo.com" className="push-right">Feedback</a>
               </div>
               <div className="timeline-data-select">
                 <div className="timeline-data-select__select">
