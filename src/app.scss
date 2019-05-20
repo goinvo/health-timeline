@@ -8,6 +8,24 @@
   height: 100vh;
 }
 
+.timeline-header {
+  padding: 5px 20px;
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  a {
+    padding: 10px 20px;
+  }
+
+  .push-right {
+    margin-left: auto;
+  }
+}
+
 .health-timeline {
   position: relative;
   width: 100vw;
@@ -27,6 +45,7 @@
 }
 
 .timeline-data-select {
+  flex: 1;
    &__select {
     max-width: 400px;
     margin: 0 auto;

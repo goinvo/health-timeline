@@ -42,6 +42,32 @@ const colors = [
   }
 ];
 
+const selectStyles = {
+  container: (provided) => ({
+    ...provided,
+    textAlign: 'center',
+  }),
+  control: (provided) => ({
+    ...provided,
+    display: 'inline-flex',
+    border: 'none',
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    position: 'static',
+    transform: 'none',
+    marginRight: '6px',
+  }),
+  valueContainer: (provided) => ({
+    ...provided,
+    paddingRight: '0px',
+  }),
+  indicatorSeparator: (provided) => ({
+    ...provided,
+    display: 'none',
+  }),
+};
+
 Modal.setAppElement('#root');
 
 class App extends Component {
@@ -178,21 +204,18 @@ class App extends Component {
             <h2>The future of Precision Medicine</h2>
           </div>
         );
-        break;
       case 'autism':
         return (
           <div>
             <h2>The future of Precision Autism Medicine</h2>
           </div>
         );
-        break;
       case 'cancer':
         return (
           <div>
             <h2>The future of Precision Cancer Medicine</h2>
           </div>
         );
-        break;
       default:
         return (
           <div>
@@ -241,13 +264,23 @@ class App extends Component {
       return (
         <div className="App">
           <div className="timeline-wrapper">
-            <div className="timeline-data-select">
-              <div className="timeline-data-select__select">
-                <Select
-                  value={this.state.dataset}
-                  options={this.state.datasets}
-                  onChange={this.handleDatasetChange}
-                />
+            <div className="timeline-header">
+              <div className="timeline-header__row">
+                <a href="https://goinvo.github.io/PrecisionMedicineMap/">About</a>
+                <a href="https://docs.google.com/spreadsheets/d/1UaJB6GqmCOJ9mAaNzEark9Of4AIb7wTx346E7gNlhGE/edit">Suggest events to add to the timeline</a>
+                <a href="mailto:precision-medicine-timeline@goinvo.com" className="push-right">Feedback</a>
+              </div>
+              <div className="timeline-data-select">
+                <div className="timeline-data-select__select">
+                  <Select
+                    styles={selectStyles}
+                    value={this.state.dataset}
+                    options={this.state.datasets}
+                    onChange={this.handleDatasetChange}
+                    cropWithEllipsis={false}
+                    isSearchable={false}
+                  />
+                </div>
               </div>
             </div>
             <div className="carousel-wrapper" ref={this.carouselWrapper}>
