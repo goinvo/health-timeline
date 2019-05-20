@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-// import { Text } from '@vx/text';
+import { Text } from '@vx/text';
 
 class EventMarker extends Component {
   render() {
-    // const milestoneHeight = 50;
-    // const milestoneWidth = this.props.bandwidth - 40;
+    const milestoneHeight = 50;
+    const computedWidth = this.props.bandwidth - 40;
+    const milestoneWidth = computedWidth > 30 ? computedWidth : 30;
 
     return (
       <g
         className="health-timeline-event"
         transform={ `translate(${ this.props.translate })` }>
         {
-          this.props.data.milestone ?
+          this.props.data.milestoneText ?
             <circle
               cx="0"
               cy="0"
@@ -21,7 +22,7 @@ class EventMarker extends Component {
           : null
         }
         {
-          this.props.data.milestone ?
+          this.props.data.milestoneText ?
             <circle
               cx="0"
               cy="0"
@@ -33,21 +34,21 @@ class EventMarker extends Component {
         <circle
           cx="0"
           cy="0"
-          className={ this.props.data.milestone ? "event event--milestone" : "event" }
+          className={ this.props.data.milestoneText ? "event event--milestone" : "event" }
           fill={ this.props.fill }>
         </circle>
-        {/* {
-          this.props.data.milestone ?
+        {
+          this.props.renderText && this.props.data.milestoneText ?
               <Text
-                x="0"
+                x={ this.props.alignText === 'end' ? -25 : 25 }
                 y="0"
-                width={ milestoneWidth - (milestoneWidth * .2) }
-                textAnchor="middle"
+                width={ milestoneWidth }
+                textAnchor={this.props.alignText}
                 verticalAnchor="middle">
-                {this.props.data.title}
+                {this.props.data.milestoneText}
               </Text>
           : null
-        } */}
+        }
       </g>
     )
   }

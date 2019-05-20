@@ -26,7 +26,7 @@ export function load(callback) {
               title: event[9],
               body: event[10],
               category: event[16] ? event[16] : "Medicine", // TODO: Placeholder for uncategorized events
-              milestone: event[17],
+              milestoneText: event[17],
               dataset: [ event[22], event[23] ],
             };
           }) || [];

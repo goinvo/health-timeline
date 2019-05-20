@@ -255,6 +255,8 @@ class HealthTimeline extends Component {
                       data={event}
                       fill={this.props.colorScale(event.category).header}
                       bandwidth={this.scaleX.bandwidth()}
+                      renderText={ this.state.width > 800 }
+                      alignText={ (this.scaleX(event.category) === this.scaleX(this.state.categories[this.state.categories.length - 1])) ? 'end' : 'start' }
                       translate={`${this.scaleX(event.category) + (this.scaleX.bandwidth() / 2)}, ${this.scaleY(moment(event.date))}`}
                     />
                   </g>
