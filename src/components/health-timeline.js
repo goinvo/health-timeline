@@ -219,8 +219,9 @@ class HealthTimeline extends Component {
           <svg className="health-timeline-svg" width={this.state.width} height={this.state.height}>
             <defs>
               <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style={{ stopColor: this.props.colorScale(this.props.activeCategory).background, stopOpacity: "0.5" }} />
-                <stop offset="100%" style={{ stopColor: "#FAF9F9", stopOpacity: "1" }} />
+                <stop offset="0%" style={{ stopColor: this.props.colorScale(this.props.activeCategory).background }} />
+                <stop offset="99%" style={{ stopColor: this.props.colorScale(this.props.activeCategory).background }} />
+                <stop offset="100%" style={{ stopColor: "#FAF9F9" }} />
               </linearGradient>
               <clipPath id="circle-left">
                 <rect x="0" y="-10" width="10" height="20"/>
