@@ -3,6 +3,7 @@ import * as d3 from 'd3'; // TODO: Only take what we need
 import * as moment from 'moment';
 import { Events, animateScroll } from 'react-scroll';
 import { debounce, throttle } from 'lodash';
+import { Text } from '@vx/text';
 
 import Axis from './axis';
 import EventMarker from './event-marker';
@@ -208,6 +209,10 @@ class HealthTimeline extends Component {
   }
 
   render() {
+    const endOfTimelinePos = this.scaleY(moment(this.state.events[this.state.events.length - 1].date).add(1, 'years'));
+    const pathHeight = this.state.width < 700 ? 200 : 400;
+    const combineHeight = this.state.width < 700 ? 300 : 450;
+
     return (
       <div className="health-timeline">
         <div className="health-timeline-svg-container" onScroll={this.handleScroll} id="health-timeline-scroll-container" ref={this.scrollContainer}>
@@ -217,13 +222,14 @@ class HealthTimeline extends Component {
                 <stop offset="0%" style={{ stopColor: this.props.colorScale(this.props.activeCategory).background, stopOpacity: "0.5" }} />
                 <stop offset="100%" style={{ stopColor: "#FAF9F9", stopOpacity: "1" }} />
               </linearGradient>
+              <clipPath id="circle-left">
+                <rect x="0" y="-10" width="10" height="20"/>
+              </clipPath>
             </defs>
             <g className="health-timeline-columns">
               {
                 this.state.categories.map((cat) => {
                   const middleColPos = (this.state.width / 2) - this.scaleX(cat);
-                  const endOfTimelinePos = this.scaleY(moment(this.state.events[this.state.events.length - 1].date).add(1, 'years'));
-                  const pathLength = this.state.width < 700 ? 200 : 400;
                   return (
                     <g className="health-timeline-column"
                        transform={ `translate(${this.scaleX(cat)}, 0)` }>
@@ -236,7 +242,7 @@ class HealthTimeline extends Component {
                       </rect>
                       <path
                         transform={ `translate(0, ${endOfTimelinePos})`}
-                        d={`M${ this.scaleX.bandwidth() / 2},0C${ this.scaleX.bandwidth() / 2},${pathLength / 2} ${middleColPos},${pathLength / 2} ${middleColPos},${pathLength}`}
+                        d={`M${ this.scaleX.bandwidth() / 2},0C${ this.scaleX.bandwidth() / 2},${pathHeight / 2} ${middleColPos},${pathHeight / 2} ${middleColPos},${pathHeight}`}
                         fill="none"
                         stroke="#FAF9F9"
                         strokeWidth={ this.scaleX.bandwidth() }>
@@ -264,8 +270,48 @@ class HealthTimeline extends Component {
               })}
             </g>
             <Axis scale={this.scaleY} ticks={this.state.totalYears} translate={`translate(0, 0)`}/>
+            <g
+              transform={ `translate(${this.state.width / 2}, ${endOfTimelinePos + pathHeight})`}>
+              <rect
+                x={ -(this.scaleX.bandwidth() / 2) }
+                y={ 0 }
+                width={ this.scaleX.bandwidth() }
+                height={ combineHeight }
+                fill="#FAF9F9">
+              </rect>
+              <g transform="translate(0, 0)">
+                <circle cx="0" cy="0" r="10" style={{ fill: this.props.colorScale(this.state.categories[4]).header, strokeWidth: 4 }}/>
+                <circle cx="0" cy="0" r="10" style={{ fill: this.props.colorScale(this.state.categories[3]).header, clipPath: "url(#circle-left)" }}/>
+                <Text
+                  width={this.state.width / 2.5}
+                  x="20"
+                  y="-5"
+                  verticalAnchor="start"
+                  textAnchor="start">Approach populations through regulation, reimbursement, and research funding.</Text>
+              </g>
+              <g transform={`translate(0, ${combineHeight * .33})`}>
+                <circle cx="0" cy="0" r="10" style={{ fill: this.props.colorScale(this.state.categories[1]).header, strokeWidth: 4 }}/>
+                <circle cx="0" cy="0" r="10" style={{ fill: this.props.colorScale(this.state.categories[0]).header, clipPath: "url(#circle-left)" }}/>
+                <Text
+                  width={this.state.width / 2.5}
+                  x="20"
+                  y="-5"
+                  verticalAnchor="start"
+                  textAnchor="start">Adopt clinical workflows into care model to improve patients outcome while saving time and reducing cost.</Text>
+              </g>
+              <g transform={`translate(0, ${combineHeight * .66})`}>
+                <circle cx="0" cy="0" r="10" style={{ fill: this.props.colorScale(this.state.categories[0]).header, strokeWidth: 4 }}/>
+                <circle cx="0" cy="0" r="10" style={{ fill: this.props.colorScale(this.state.categories[2]).header, clipPath: "url(#circle-left)" }}/>
+                <Text
+                  width={this.state.width / 2.5}
+                  x="20"
+                  y="-5"
+                  verticalAnchor="start"
+                  textAnchor="start">Integrate large volumes of lifestyle data and digital health to support decision making for patients.</Text>
+              </g>
+            </g>
           </svg>
-          <div className="health-timeline-children" style={{ top: this.scaleY(moment(this.state.events[this.state.events.length - 1].date).add(1, 'years')) + (this.state.width < 700 ? 200 : 400) }}>
+          <div className="health-timeline-children" style={{ top: endOfTimelinePos + pathHeight + combineHeight }}>
             { this.props.children }
           </div>
         </div>
