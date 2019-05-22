@@ -16,6 +16,8 @@ import { ReactComponent as IconData } from './images/icons/data.svg';
 import { ReactComponent as IconMedicine } from './images/icons/medicine.svg';
 import { ReactComponent as IconPolicy } from './images/icons/policy.svg';
 import { ReactComponent as IconScience } from './images/icons/science.svg';
+import futurePM1 from './images/future-precision-medicine-01.jpg';
+import futureAutism1 from './images/future-autism-01.jpg';
 
 import './app.scss';
 
@@ -184,7 +186,6 @@ class App extends Component {
   }
 
   handleDatasetChange = (dataset) => {
-
     const events = this.state.allEvents.filter(event => {
       return event.dataset.includes(dataset.value);
     });
@@ -200,14 +201,77 @@ class App extends Component {
     switch (this.state.dataset.value) {
       case 'all':
         return (
-          <div>
-            <h2>The future of Precision Medicine</h2>
+          <div className="max-width">
+            <h2 className="text--center">The future of Precision Medicine</h2>
+
+            <p>By collecting and analyzing data on a population or person's entire life experience, new health insights will emerge. This will lead to more personalized and effective care plans for the individual and for the many, ultimately raising quality of life for all.</p>
+
+            <h4>It’s all about data, a fundamental ingredient</h4>
+            <p>
+              The data collected will encompass all of the social determinants of health and come from many sources such as medical data from electronic health records, all the way to community data on our neighborhoods, towns, and cities.
+            </p>
+
+            <img src={futurePM1}></img>
+
+            <h4>Sharing data</h4>
+            <p>
+              Collected data will be securely stored in a standardized computable format. We will own our data, enabling us to choose how much of it to share and to whom.<sup>[5]</sup>
+            </p>
+
+            <h4>Understanding data</h4>
+            <p>
+              Doctors, researchers, and citizen scientists will access and analyze our shared data. Using data science in biomedicine, new patterns will emerge from this valuable public resource, which will be translated into new algorithms for predictive health, and new health discoveries.<sup>[4]</sup>
+            </p>
+
+            <h4>Moving medicine from reactive to proactive</h4>
+            <p>
+              In this precision medicine future that is less than a decade away, we will use our newly found insights to address risks and maintain health long before a disease occurs.
+            </p>
+
+            <p>Genetic insights will allow doctors to know how well a medication will work for you as well as create customized medications, enabling greater drug efficacy while reducing side effects.</p>
+
+            <p>Understanding not only where your health is, but where it will go, will enable more optimal lines of therapy as well as greater treatment adherence.</p>
+
+            <p>Having these advanced insights into health will save time and money by using the most appropriate treatments based on our needs and what is available, ultimately reducing overall health care expenses for a system that uses almost a fifth of our national expenditure.</p>
+
+            <h4>Precision medicine will help specific conditions</h4>
+            <p>
+              The plan of care for those with diabetes, cancer, Autism Spectrum Disorder, or rare disease are all unique. Through use of this new technology paired with data from those that are similar to us, we will be able to diagnose earlier.
+            </p>
+
+            <p>We will be able to take preventative steps through use of individualized diets and lifestyles. We will have more effective choices in antibiotics and targeted drugs, fit exactly for the condition at hand.</p>
           </div>
         );
       case 'autism':
         return (
-          <div>
-            <h2>The future of Precision Autism Medicine</h2>
+          <div className="max-width">
+            <h2 className="text--center">The future of Precision Autism Medicine</h2>
+
+            <h3 className="text--center text--gray">Precision medicine would change our understanding of Autism</h3>
+
+            <p>For parents of children with autism, precision medicine will mean better understanding of their child’s condition, more independence, and fewer meltdowns. For their children, it will mean healthier lives, finding their passions, and developing their abilities for future happiness.</p>
+
+            <h4>Autism care driven by everyday activities and life data</h4>
+            <p>
+              The care team and child will be a part of recording data on behavior, environment, and other health metrics. By presenting this information in an easily accessible health dashboard, it will empower parents to better understand and track their child’s progress towards their goals. These data stories will seed diagnostic, predictive, and social insights for their child as they transition through life.
+            </p>
+
+            <img src={futureAutism1}></img>
+
+            <h4>Early Diagnosis Based on Biomarkers</h4>
+            <p>
+              Precision medicine would improve early diagnosis by better identifying the causes and risk factors for cases of autism spectrum disorder. High fidelity ODLs (observations of daily living) combined with genetics, and biome data, paving the way for researchers to develop better ASD care plans.<sup>[10]</sup>
+            </p>
+
+            <h4>Predict Care Paths</h4>
+            <p>
+              Tailored therapeutics and medications will treat core symptoms. Biometrics track physiological changes. Near-invisible wearables and ambient devices track surface skin temperature, heart rate, sweating, voice, and gait, in order to predict next hour or next week remedies.<sup>[9]</sup>
+            </p>
+
+            <h4>Changing the Narrative</h4>
+            <p>
+              Future precision medicine efforts will complete the profile of this diverse spectrum. We will understand the molecular and environmental factors that contribute to ASD, to create accurate predictions and therapies.
+            </p>
           </div>
         );
       case 'cancer':
@@ -334,6 +398,17 @@ class App extends Component {
               <div className="health-timeline-future">
                 <div className="health-timeline-future__content">
                   { this.renderFuture() }
+
+                  <div className="references-container max-width" id="#references">
+                    <h4>References</h4>
+                    <ul className="references">
+                      <li>[4] Topol (2015). INDIVIDUALIZED MEDICINE From Pre-Womb to Tomb</li>
+                      <li>[5] <a href="http://opr.ca.gov/docs/20190107-Precision_Medicine_An_Action_Plan_for_California.pdf">http://opr.ca.gov/docs/20190107-Precision_Medicine_An_Action_Plan_for_California.pdf</a></li>
+                      <li>[9] <a href="https://www.echo.co.uk/blog/the-future-of-autism-treatment-4-recent-innovations-with-transformative-potential/">https://www.echo.co.uk/blog/the-future-of-autism-treatment-4-recent-innovations-with-transformative-potential/</a></li>
+                      <li>[10] <a href="https://www.futuremedicine.com/doi/full/10.2217/pme.15.35">https://www.futuremedicine.com/doi/full/10.2217/pme.15.35</a></li>
+                      <li>[11] <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3420760/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3420760/</a></li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </HealthTimeline>

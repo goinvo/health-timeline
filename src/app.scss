@@ -225,8 +225,17 @@
     padding: 50px 20px;
   }
 
-  h2 {
-    text-align: center;
+  h4 {
+    margin-top: 2rem;
+    margin-bottom: .5rem;
+
+    & + p {
+      margin-top: 0;
+    }
+  }
+
+  img {
+    width: 100%;
   }
 }
 
@@ -236,6 +245,12 @@
   }
   &--bold {
     font-weight: 700;
+  }
+  &--center {
+    text-align: center;
+  }
+  &--gray {
+    color: #535663;
   }
 }
 
@@ -265,4 +280,19 @@
   0% { r: 10px; opacity: 1; }
   50% { r: 50px; opacity: 0; }
   100% { r: 0px; opacity: 0; }
+}
+
+
+.max-width {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.references-container {
+  margin-top: 50px;
+}
+
+.references {
+  list-style: none;
+  padding-left: 0;
 }
