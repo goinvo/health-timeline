@@ -215,20 +215,20 @@ class App extends Component {
 
             <h4>Sharing data</h4>
             <p>
-              Collected data will be securely stored in a standardized computable format. We will own our data, enabling us to choose how much of it to share and to whom.<sup>[5]</sup>
+              Collected data will be securely stored in a standardized computable format. We will own our data, enabling us to choose how much of it to share and to whom.<sup>[2]</sup>
             </p>
 
             <h4>Understanding data</h4>
             <p>
-              Doctors, researchers, and citizen scientists will access and analyze our shared data. Using data science in biomedicine, new patterns will emerge from this valuable public resource, which will be translated into new algorithms for predictive health, and new health discoveries.<sup>[4]</sup>
+              Doctors, researchers, and citizen scientists will access and analyze our shared data. Using data science in biomedicine, new patterns will emerge from this valuable public resource, which will be translated into new algorithms for predictive health, and new health discoveries.<sup>[2, 3]</sup>
             </p>
 
             <h4>Moving medicine from reactive to proactive</h4>
             <p>
-              In this precision medicine future that is less than a decade away, we will use our newly found insights to address risks and maintain health long before a disease occurs.
+              In this precision medicine future that is less than a decade away, we will use our newly found insights to address risks and maintain health long before a disease occurs.<sup>[1]</sup>
             </p>
 
-            <p>Genetic insights will allow doctors to know how well a medication will work for you as well as create customized medications, enabling greater drug efficacy while reducing side effects.</p>
+            <p>Genetic insights will allow doctors to know how well a medication will work for you as well as create customized medications, enabling greater drug efficacy while reducing side effects.<sup>[4]</sup></p>
 
             <p>Understanding not only where your health is, but where it will go, will enable more optimal lines of therapy as well as greater treatment adherence.</p>
 
@@ -260,17 +260,17 @@ class App extends Component {
 
             <h4>Early Diagnosis Based on Biomarkers</h4>
             <p>
-              Precision medicine would improve early diagnosis by better identifying the causes and risk factors for cases of autism spectrum disorder. High fidelity ODLs (observations of daily living) combined with genetics, and biome data, paving the way for researchers to develop better ASD care plans.<sup>[10]</sup>
+              Precision medicine would improve early diagnosis by better identifying the causes and risk factors for cases of autism spectrum disorder. High fidelity ODLs (observations of daily living) combined with genetics, and biome data, paving the way for researchers to develop better ASD care plans.<sup>[6]</sup>
             </p>
 
             <h4>Predict Care Paths</h4>
             <p>
-              Tailored therapeutics and medications will treat core symptoms. Biometrics track physiological changes. Near-invisible wearables and ambient devices track surface skin temperature, heart rate, sweating, voice, and gait, in order to predict next hour or next week remedies.<sup>[9]</sup>
+              Tailored therapeutics and medications will treat core symptoms. Biometrics track physiological changes. Near-invisible wearables and ambient devices track surface skin temperature, heart rate, sweating, voice, and gait, in order to predict next hour or next week remedies.<sup>[5]</sup>
             </p>
 
             <h4>Changing the Narrative</h4>
             <p>
-              Future precision medicine efforts will complete the profile of this diverse spectrum. We will understand the molecular and environmental factors that contribute to ASD, to create accurate predictions and therapies.
+              Future precision medicine efforts will complete the profile of this diverse spectrum. We will understand the molecular and environmental factors that contribute to ASD, to create accurate predictions and therapies.<sup>[7]</sup>
             </p>
           </div>
         );
@@ -402,11 +402,13 @@ class App extends Component {
                   <div className="references-container max-width" id="#references">
                     <h4>References</h4>
                     <ul className="references">
-                      <li>[4] Topol (2015). INDIVIDUALIZED MEDICINE From Pre-Womb to Tomb</li>
-                      <li>[5] <a href="http://opr.ca.gov/docs/20190107-Precision_Medicine_An_Action_Plan_for_California.pdf">http://opr.ca.gov/docs/20190107-Precision_Medicine_An_Action_Plan_for_California.pdf</a></li>
-                      <li>[9] <a href="https://www.echo.co.uk/blog/the-future-of-autism-treatment-4-recent-innovations-with-transformative-potential/">https://www.echo.co.uk/blog/the-future-of-autism-treatment-4-recent-innovations-with-transformative-potential/</a></li>
-                      <li>[10] <a href="https://www.futuremedicine.com/doi/full/10.2217/pme.15.35">https://www.futuremedicine.com/doi/full/10.2217/pme.15.35</a></li>
-                      <li>[11] <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3420760/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3420760/</a></li>
+                      <li>[1] Snyder, M. (2016). Genomics & personalized medicine, what everyone needs to know: Oxford University Press</li>
+                      <li>[2] Topol, E. (2015). INDIVIDUALIZED MEDICINE From Pre-Womb to Tomb. Retrieved May 12: <a href="https://www.ncbi.nlm.nih.gov/pubmed/24679539">https://www.ncbi.nlm.nih.gov/pubmed/24679539</a></li>
+                      <li>[3] Precision Medicine: An Action Plan for California. Retrieved April 30, 2019: <a href="http://opr.ca.gov/docs/20190107-Precision_Medicine_An_Action_Plan_for_California.pdf">http://opr.ca.gov/docs/20190107-Precision_Medicine_An_Action_Plan_for_California.pdf</a></li>
+                      <li>[4] Brody, B.The Future of Precision Medicine: Retrieve May 1, 2019: <a href="https://www.webmd.com/g00/cancer/features/precision-medicine-what-future-holds?i10c.ua=1&i10c.encReferrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8%3d&i10c.dv=16">https://www.webmd.com/g00/cancer/features/precision-medicine-what-future-holds?i10c.ua=1&i10c.encReferrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8%3d&i10c.dv=16</a></li>
+                      <li>[5] The future of autism treatment: 4 recent innovations with transformative potential. Retrieved May 15,2019: <a href="https://www.echo.co.uk/blog/the-future-of-autism-treatment-4-recent-innovations-with-transformative-potential">https://www.echo.co.uk/blog/the-future-of-autism-treatment-4-recent-innovations-with-transformative-potential</a></li>
+                      <li>[6] Evidence-based and precision medicine: the quest for pragmatic balance in autism. Retrieved. Retrieved April 25,2019: <a href="https://www.futuremedicine.com/doi/full/10.2217/pme.15.35">https://www.futuremedicine.com/doi/full/10.2217/pme.15.35</a></li>
+                      <li>[7] The Molecular Genetics of Autism Spectrum Disorders: Genomic Mechanisms, Neuroimmunopathology, and Clinical Implications. Retrieved May 22, 2019: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3420760/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3420760/</a></li>
                     </ul>
                   </div>
                 </div>

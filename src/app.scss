@@ -295,4 +295,15 @@
 .references {
   list-style: none;
   padding-left: 0;
+
+  li {
+    margin-bottom: 1rem;
+  }
+
+  a {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    word-break: break-word;
+  }
 }
