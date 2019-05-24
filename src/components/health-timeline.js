@@ -18,35 +18,17 @@ class HealthTimeline extends Component {
     super(props);
     // TODO: Make all these configurable with props (pixelsPerYear, zoomFactor (initial?), outer year range padding, etc)
 
-    this.init(props, false);
-
-    this.header = React.createRef();
-    this.scrollContainer = React.createRef();
-
-    const pixelsPerYear = props.pixelsPerYear ? props.pixelsPerYear : 20;
-    const zoomFactor = 1;
-    const allDates = props.events.map((event) => moment(event.date));
-
-    const minDate = props.minDate ? moment(props.minDate) : moment.min(allDates).subtract(5, 'years');
-    const maxDate = props.maxDate ? moment(props.maxDate) : moment.max(allDates);
-
-    const totalYears = maxDate.diff(minDate, 'years');
-
-    const categories = props.categories || [...new Set(props.events.map((event) => event.category))];
-
-    const events = props.events.concat().sort((a, b) => {
-      return moment.utc(a.timeStamp).diff(moment.utc(b.timeStamp));
-    })
-
     this.state = {
       width: props.width,
-      categories,
-      events,
-      totalYears,
-      maxDate,
+      zoomFactor: 1,
       headerClass: '',
       scrolling: false,
     };
+
+    this.init(props, true);
+
+    this.header = React.createRef();
+    this.scrollContainer = React.createRef();
   }
 
   componentDidMount() {
@@ -79,16 +61,19 @@ class HealthTimeline extends Component {
     this.truncate(d3.select(this.header.current).selectAll('text'), this.scaleX.bandwidth())
   }
 
-  init = (props, shouldSetState = true) => {
+  init = (props, constructorCall = false) => {
     const categories = props.categories || [...new Set(props.events.map((event) => event.category))];
-    const allDates = props.events.map((event) => moment(event.date));
-    const pixelsPerYear = props.pixelsPerYear ? props.pixelsPerYear : 20;
+    const events = props.events.concat().sort((a, b) => {
+      return moment.utc(a.timeStamp).diff(moment.utc(b.timeStamp));
+    })
 
+    const allDates = props.events.map((event) => moment(event.date));
     const minDate = props.minDate ? moment(props.minDate) : moment.min(allDates).subtract(5, 'years');
     const maxDate = props.maxDate ? moment(props.maxDate) : moment.max(allDates);
-
-    const yDomain = props.inverted ? [maxDate, minDate] : [minDate, maxDate];
     const totalYears = maxDate.diff(minDate, 'years');
+
+    const pixelsPerYear = props.pixelsPerYear ? props.pixelsPerYear : 20;
+    const yDomain = props.inverted ? [maxDate, minDate] : [minDate, maxDate];
     const timelineHeight = totalYears * pixelsPerYear;
 
     this.scaleX = d3.scaleBand()
@@ -98,13 +83,14 @@ class HealthTimeline extends Component {
 
     this.scaleY = d3.scaleTime()
       .domain(yDomain)
-      .range([0, timelineHeight]); // TODO: zoom factor?
+      .range([0, timelineHeight * this.state.zoomFactor]);
 
-    const events = props.events.concat().sort((a, b) => {
-      return moment.utc(a.timeStamp).diff(moment.utc(b.timeStamp));
-    })
-
-    if (shouldSetState) {
+    if (constructorCall) {
+      this.state.categories = categories;
+      this.state.events = events;
+      this.state.totalYears = totalYears;
+      this.state.maxDate = maxDate;
+    } else {
       this.setState({
         width: props.width,
         events,
