@@ -23,13 +23,14 @@ class HealthTimeline extends Component {
     this.header = React.createRef();
     this.scrollContainer = React.createRef();
 
-    const pixelsPerYear = 20;
+    const pixelsPerYear = props.pixelsPerYear ? props.pixelsPerYear : 20;
     const zoomFactor = 1;
-    const allDates = props.events.map((event) => event.date);
-    const minDate = moment(props.minDate) || moment(d3.min(allDates)).subtract(10, 'years'); // TODO: min/max from data doesn't seem to be working
-    const maxDate = moment(props.maxDate) || moment(d3.max(allDates)).add(10, 'years');
+    const allDates = props.events.map((event) => moment(event.date));
+
+    const minDate = props.minDate ? moment(props.minDate) : moment.min(allDates).subtract(5, 'years');
+    const maxDate = props.maxDate ? moment(props.maxDate) : moment.max(allDates);
+
     const totalYears = maxDate.diff(minDate, 'years');
-    const height = totalYears * pixelsPerYear;
 
     const categories = props.categories || [...new Set(props.events.map((event) => event.category))];
 
@@ -39,10 +40,10 @@ class HealthTimeline extends Component {
 
     this.state = {
       width: props.width,
-      height,
       categories,
       events,
       totalYears,
+      maxDate,
       headerClass: '',
       scrolling: false,
     };
@@ -80,13 +81,15 @@ class HealthTimeline extends Component {
 
   init = (props, shouldSetState = true) => {
     const categories = props.categories || [...new Set(props.events.map((event) => event.category))];
-    const allDates = props.events.map((event) => event.date);
-    const pixelsPerYear = 20;
-    const minDate = moment(props.minDate) || moment(d3.min(allDates)).subtract(10, 'years'); // TODO: Or support custom start/end dates
-    const maxDate = moment(props.maxDate) || moment(d3.max(allDates)).add(10, 'years');
+    const allDates = props.events.map((event) => moment(event.date));
+    const pixelsPerYear = props.pixelsPerYear ? props.pixelsPerYear : 20;
+
+    const minDate = props.minDate ? moment(props.minDate) : moment.min(allDates).subtract(5, 'years');
+    const maxDate = props.maxDate ? moment(props.maxDate) : moment.max(allDates);
+
     const yDomain = props.inverted ? [maxDate, minDate] : [minDate, maxDate];
     const totalYears = maxDate.diff(minDate, 'years');
-    const height = totalYears * pixelsPerYear;
+    const timelineHeight = totalYears * pixelsPerYear;
 
     this.scaleX = d3.scaleBand()
       .domain(categories)
@@ -95,7 +98,7 @@ class HealthTimeline extends Component {
 
     this.scaleY = d3.scaleTime()
       .domain(yDomain)
-      .range([0, height]); // TODO: zoom factor?
+      .range([0, timelineHeight]); // TODO: zoom factor?
 
     const events = props.events.concat().sort((a, b) => {
       return moment.utc(a.timeStamp).diff(moment.utc(b.timeStamp));
@@ -104,10 +107,10 @@ class HealthTimeline extends Component {
     if (shouldSetState) {
       this.setState({
         width: props.width,
-        height,
         events,
         categories,
-        totalYears
+        totalYears,
+        maxDate,
       }, () => {
         const pos = this.scaleY(moment(this.state.events[props.focusedIndex].date));
         this.scrollToEvent(pos);
@@ -209,14 +212,15 @@ class HealthTimeline extends Component {
   }
 
   render() {
-    const endOfTimelinePos = this.scaleY(moment(this.state.events[this.state.events.length - 1].date).add(1, 'years'));
+    const endOfTimelinePos = this.scaleY(this.state.maxDate);
     const pathHeight = this.state.width < 700 ? 200 : 400;
     const combineHeight = this.state.width < 700 ? 300 : 450;
+    const totalHeight = endOfTimelinePos + pathHeight + combineHeight;
 
     return (
       <div className="health-timeline">
         <div className="health-timeline-svg-container" onScroll={this.handleScroll} id="health-timeline-scroll-container" ref={this.scrollContainer}>
-          <svg className="health-timeline-svg" width={this.state.width} height={this.state.height}>
+          <svg className="health-timeline-svg" width={this.state.width} height={totalHeight}>
             <defs>
               <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" style={{ stopColor: this.props.colorScale(this.props.activeCategory).background }} />
@@ -312,7 +316,7 @@ class HealthTimeline extends Component {
               </g>
             </g>
           </svg>
-          <div className="health-timeline-children" style={{ top: endOfTimelinePos + pathHeight + combineHeight }}>
+          <div className="health-timeline-children" style={{ top: totalHeight }}>
             { this.props.children }
           </div>
         </div>

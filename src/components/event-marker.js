@@ -3,7 +3,6 @@ import { Text } from '@vx/text';
 
 class EventMarker extends Component {
   render() {
-    const milestoneHeight = 50;
     const computedWidth = this.props.bandwidth - 40;
     const milestoneWidth = computedWidth > 30 ? computedWidth : 30;
 

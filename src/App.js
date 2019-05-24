@@ -389,8 +389,6 @@ class App extends Component {
               offsetTop={this.state.paddingTop}
               events={this.state.events}
               width={this.state.width}
-              minDate="1880"
-              maxDate="2080"
               onEventClick={this.updateFocusedIndex}
               onFocusedEventChange={this.updateFocusedIndex}
               onScrollBeyondTimeline={this.toggleCarousel}
