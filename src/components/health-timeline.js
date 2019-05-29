@@ -8,6 +8,9 @@ import { Text } from '@vx/text';
 import Axis from './axis';
 import EventMarker from './event-marker';
 
+import { ReactComponent as IconZoomIn } from '../images/icons/zoom-in.svg';
+import { ReactComponent as IconZoomOut } from '../images/icons/zoom-out.svg';
+
 const scroll = animateScroll;
 const scrollEvents = Events;
 
@@ -61,7 +64,7 @@ class HealthTimeline extends Component {
     this.truncate(d3.select(this.header.current).selectAll('text'), this.scaleX.bandwidth())
   }
 
-  init = (props, constructorCall = false) => {
+  init = (props, constructorCall = false, scrollTransition = true) => {
     const categories = props.categories || [...new Set(props.events.map((event) => event.category))];
     const events = props.events.concat().sort((a, b) => {
       return moment.utc(a.timeStamp).diff(moment.utc(b.timeStamp));
@@ -99,7 +102,7 @@ class HealthTimeline extends Component {
         maxDate,
       }, () => {
         const pos = this.scaleY(moment(this.state.events[props.focusedIndex].date));
-        this.scrollToEvent(pos);
+        this.scrollToEvent(pos, scrollTransition ? null : 0);
       })
     }
   }
@@ -110,10 +113,10 @@ class HealthTimeline extends Component {
     }
   }
 
-  scrollToEvent = (pos) => {
+  scrollToEvent = (pos, dur = 750) => {
     const args = {
       containerId: this.scrollContainer.current.id, // NOTE: Doesn't seem possible to pass the element here, needs an ID for this library
-      duration: 750
+      duration: dur
     }
 
     this.setState({ scrolling: true }, () => {
@@ -178,6 +181,26 @@ class HealthTimeline extends Component {
     }
   }
 
+  zoom = (dir) => {
+    if (dir === 'in') {
+      if (this.state.zoomFactor < 3) {
+        this.setState({
+          zoomFactor: this.state.zoomFactor + 0.5
+        }, () => {
+          this.init(this.props, false, false);
+        });
+      }
+    } else {
+      if (this.state.zoomFactor > 1) {
+        this.setState({
+          zoomFactor: this.state.zoomFactor - 0.5
+        }, () => {
+          this.init(this.props, false, false);
+        });
+      }
+    }
+  }
+
   truncate = (text, width) => {
     text.each(function () {
         const t = d3.select(this);
@@ -205,6 +228,10 @@ class HealthTimeline extends Component {
 
     return (
       <div className="health-timeline">
+        <div className="zoom-controls">
+          <button className="button--transparent" onClick={() => this.zoom('in')}><IconZoomIn /></button>
+          <button className="button--transparent" onClick={() => this.zoom('out')}><IconZoomOut /></button>
+        </div>
         <div className="health-timeline-svg-container" onScroll={this.handleScroll} id="health-timeline-scroll-container" ref={this.scrollContainer}>
           <svg className="health-timeline-svg" width={this.state.width} height={totalHeight}>
             <defs>

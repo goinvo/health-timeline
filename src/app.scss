@@ -1,3 +1,5 @@
+$color-gray: #535663;
+
 * {
   box-sizing: border-box;
 }
@@ -18,12 +20,12 @@
   }
 
   a {
-    color: #535663;
+    color: $color-gray;
     padding: 10px 20px;
 
     &:hover,
     &:focus {
-      color: darken(#535663, 15%);
+      color: darken($color-gray, 15%);
     }
   }
 
@@ -78,7 +80,7 @@
   pointer-events: none;
 
   text {
-    color: #535663;
+    color: $color-gray;
   }
 }
 
@@ -157,7 +159,7 @@
   }
 
   text {
-    color: #535663;
+    color: $color-gray;
     font-size: 10pt;
   }
 }
@@ -250,7 +252,7 @@
     text-align: center;
   }
   &--gray {
-    color: #535663;
+    color: $color-gray;
   }
 }
 
@@ -305,5 +307,33 @@
     word-wrap: break-word;
     word-break: break-all;
     word-break: break-word;
+  }
+}
+
+.zoom-controls {
+  position: absolute;
+  top: 0px;
+  right: -5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+
+  button {
+    &:first-of-type {
+      margin-left: -10px;
+    }
+    svg {
+      width: 40px;
+      height: auto;
+    }
+  }
+}
+
+.button {
+  &--transparent {
+    border: none;
+    background: none;
   }
 }
