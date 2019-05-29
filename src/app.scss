@@ -220,7 +220,11 @@ $color-gray: #535663;
 }
 
 .health-timeline-future {
-  background-color: #FAF9F9;
+  background-color: #FFF;
+  background-image: url(./images/bg-future.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center top;
   border-radius: 100px 100px 0 0;
 
   &__content {
