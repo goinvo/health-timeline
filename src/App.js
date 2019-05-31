@@ -207,25 +207,26 @@ class App extends Component {
             <p>By collecting and analyzing data on a population or person's entire life experience, new health insights will emerge. This will lead to more personalized and effective care plans for the individual and for the many, ultimately raising quality of life for all.</p>
 
             <h4>It’s all about data, a fundamental ingredient</h4>
+            <h4>1. Get data early, make better decisions earlier./h4>
             <p>
               The data collected will encompass all of the social determinants of health and come from many sources such as medical data from electronic health records, all the way to community data on our neighborhoods, towns, and cities.
             </p>
 
             <img src={futurePM1}></img>
 
-            <h4>Sharing data</h4>
+            <h4>1.1 Sharing data</h4>
             <p>
               Collected data will be securely stored in a standardized computable format. We will own our data, enabling us to choose how much of it to share and to whom.<sup>[2]</sup>
             </p>
 
-            <h4>Understanding data</h4>
+            <h4>1.2 Understanding data</h4>
             <p>
               Doctors, researchers, and citizen scientists will access and analyze our shared data. Using data science in biomedicine, new patterns will emerge from this valuable public resource, which will be translated into new algorithms for predictive health, and new health discoveries.<sup>[2, 3]</sup>
             </p>
 
-            <h4>Moving medicine from reactive to proactive</h4>
+            <h4>2. Moving medicine to proactive care</h4>
             <p>
-              In this precision medicine future that is less than a decade away, we will use our newly found insights to address risks and maintain health long before a disease occurs.<sup>[1]</sup>
+              Proactive care plan and treatment based on a constantly updating, longitudinal, computable, accurate, at-my-fingertips, digital health record. We will use our newly found insights to address risks and maintain health long before a disease occurs.<sup>[1]</sup>
             </p>
 
             <p>Genetic insights will allow doctors to know how well a medication will work for you as well as create customized medications, enabling greater drug efficacy while reducing side effects.<sup>[4]</sup></p>
@@ -234,12 +235,13 @@ class App extends Component {
 
             <p>Having these advanced insights into health will save time and money by using the most appropriate treatments based on our needs and what is available, ultimately reducing overall health care expenses for a system that uses almost a fifth of our national expenditure.</p>
 
-            <h4>Precision medicine will help specific conditions</h4>
+            <h4>3. Stage 0 detection</h4>
+             <h4>3.1 Precision medicine will help specific conditions</h4>
             <p>
               The plan of care for those with diabetes, cancer, Autism Spectrum Disorder, or rare disease are all unique. Through use of this new technology paired with data from those that are similar to us, we will be able to diagnose earlier.
             </p>
 
-            <p>We will be able to take preventative steps through use of individualized diets and lifestyles. We will have more effective choices in antibiotics and targeted drugs, fit exactly for the condition at hand.</p>
+            <p>We will be able to take preventative steps through use of individualized diets and lifestyles. We will have more effective choices in antibiotics and targeted drugs, fit exactly for the condition at hand. In overall, Precison medicine will dramatically increase long time survival rate and quality of life.</p>
           </div>
         );
       case 'autism':

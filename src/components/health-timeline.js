@@ -305,7 +305,7 @@ class HealthTimeline extends Component {
                   x="20"
                   y="-5"
                   verticalAnchor="start"
-                  textAnchor="start">Approach populations through regulation, reimbursement, and research funding.</Text>
+                  textAnchor="start">Get data early, make better decisions earlier.</Text>
               </g>
               <g transform={`translate(0, ${combineHeight * .33})`}>
                 <circle cx="0" cy="0" r="10" style={{ fill: this.props.colorScale(this.state.categories[1]).header, strokeWidth: 4 }}/>
@@ -315,7 +315,7 @@ class HealthTimeline extends Component {
                   x="20"
                   y="-5"
                   verticalAnchor="start"
-                  textAnchor="start">Adopt clinical workflows into care model to improve patients outcome while saving time and reducing cost.</Text>
+                  textAnchor="start">Proactive care.</Text>
               </g>
               <g transform={`translate(0, ${combineHeight * .66})`}>
                 <circle cx="0" cy="0" r="10" style={{ fill: this.props.colorScale(this.state.categories[0]).header, strokeWidth: 4 }}/>
@@ -325,7 +325,7 @@ class HealthTimeline extends Component {
                   x="20"
                   y="-5"
                   verticalAnchor="start"
-                  textAnchor="start">Integrate large volumes of lifestyle data and digital health to support decision making for patients.</Text>
+                  textAnchor="start">Stage 0 Detection.</Text>
               </g>
             </g>
           </svg>
