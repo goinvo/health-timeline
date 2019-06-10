@@ -325,7 +325,7 @@ class HealthTimeline extends Component {
                   x="20"
                   y="-5"
                   verticalAnchor="start"
-                  textAnchor="start">Stage 0 Detection.</Text>
+                  textAnchor="start">Stage Zero Detection.</Text>
               </g>
             </g>
           </svg>

@@ -207,7 +207,7 @@ class App extends Component {
             <p>By collecting and analyzing data on a population or person's entire life experience, new health insights will emerge. This will lead to more personalized and effective care plans for the individual and for the many, ultimately raising quality of life for all.</p>
 
             <h4>It’s all about data, a fundamental ingredient</h4>
-            <h4>1. Get data early, make better decisions earlier./h4>
+            <h4>1. Get data early, make better decisions earlier.</h4>
             <p>
               The data collected will encompass all of the social determinants of health and come from many sources such as medical data from electronic health records, all the way to community data on our neighborhoods, towns, and cities.
             </p>
@@ -235,8 +235,8 @@ class App extends Component {
 
             <p>Having these advanced insights into health will save time and money by using the most appropriate treatments based on our needs and what is available, ultimately reducing overall health care expenses for a system that uses almost a fifth of our national expenditure.</p>
 
-            <h4>3. Stage 0 detection</h4>
-             <h4>3.1 Precision medicine will help specific conditions</h4>
+            <h4>3. Stage zero detection</h4>
+            <h4>3.1 Precision medicine will help specific conditions</h4>
             <p>
               The plan of care for those with diabetes, cancer, Autism Spectrum Disorder, or rare disease are all unique. Through use of this new technology paired with data from those that are similar to us, we will be able to diagnose earlier.
             </p>
