@@ -33,6 +33,7 @@ class EventMarker extends Component {
         <circle
           cx="0"
           cy="0"
+          r={this.props.r || 10}
           className={ this.props.data.milestoneText ? "event event--milestone" : "event" }
           fill={ this.props.fill }>
         </circle>

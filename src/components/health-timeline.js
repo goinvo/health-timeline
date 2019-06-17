@@ -23,7 +23,7 @@ class HealthTimeline extends Component {
 
     this.state = {
       width: props.width,
-      zoomFactor: 1,
+      zoomFactor: 20,
       headerClass: '',
       scrolling: false,
     };
@@ -71,11 +71,12 @@ class HealthTimeline extends Component {
     })
 
     const allDates = props.events.map((event) => moment(event.date));
-    const minDate = props.minDate ? moment(props.minDate) : moment.min(allDates).subtract(5, 'years');
+    const minYearOffset = this.state.zoomFactor < 10 ? 15 : 5;
+    const minDate = props.minDate ? moment(props.minDate) : moment.min(allDates).subtract(minYearOffset, 'years');
     const maxDate = props.maxDate ? moment(props.maxDate) : moment.max(allDates);
     const totalYears = maxDate.diff(minDate, 'years');
 
-    const pixelsPerYear = props.pixelsPerYear ? props.pixelsPerYear : 20;
+    const pixelsPerYear = props.pixelsPerYear ? props.pixelsPerYear : 1;
     const yDomain = props.inverted ? [maxDate, minDate] : [minDate, maxDate];
     const timelineHeight = totalYears * pixelsPerYear;
 
@@ -183,17 +184,17 @@ class HealthTimeline extends Component {
 
   zoom = (dir) => {
     if (dir === 'in') {
-      if (this.state.zoomFactor < 3) {
+      if (this.state.zoomFactor < 48) {
         this.setState({
-          zoomFactor: this.state.zoomFactor + 0.5
+          zoomFactor: this.state.zoomFactor + 4
         }, () => {
           this.init(this.props, false, false);
         });
       }
     } else {
-      if (this.state.zoomFactor > 1) {
+      if (this.state.zoomFactor > 4) {
         this.setState({
-          zoomFactor: this.state.zoomFactor - 0.5
+          zoomFactor: this.state.zoomFactor - 4
         }, () => {
           this.init(this.props, false, false);
         });
@@ -279,6 +280,7 @@ class HealthTimeline extends Component {
                       data={event}
                       fill={this.props.colorScale(event.category).header}
                       bandwidth={this.scaleX.bandwidth()}
+                      r={ this.state.zoomFactor <= 10 ? 5 : 10 }
                       renderText={ this.state.width > 800 }
                       alignText={ (this.scaleX(event.category) === this.scaleX(this.state.categories[this.state.categories.length - 1])) ? 'end' : 'start' }
                       translate={`${this.scaleX(event.category) + (this.scaleX.bandwidth() / 2)}, ${this.scaleY(moment(event.date))}`}
