@@ -126,14 +126,18 @@ class App extends Component {
         .domain(this.state.categories)
         .range(colors)
 
-      const dataset = data.events.filter(event => {
-        return event.dataset.includes(data.datasets[0]);
-      });
-
       const datasets = data.datasets.map(datasetName => ({
         value: datasetName,
         label: datasetName === 'all' ? 'Precision Medicine' : `Precision ${datasetName.charAt(0).toUpperCase() + datasetName.slice(1)} Medicine`
       }));
+
+      const allIndex = datasets.map(d => d.value).indexOf('all');
+
+      datasets.splice(0, 0, datasets.splice(allIndex, 1)[0]);
+
+      const dataset = data.events.filter(event => {
+        return event.dataset.includes(datasets[0].value);
+      })
 
       this.setState({
         events: dataset,
